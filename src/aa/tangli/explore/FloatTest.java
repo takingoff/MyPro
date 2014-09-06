@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public class FloatTest
 {
-
+	
 	/**
 	 * @param args
 	 */
@@ -14,30 +14,28 @@ public class FloatTest
 		System.out.println(0.05f + 0.01f);
 		System.out.println(0.06);
 		System.out.println("0.06转为二进制就是无限不循环");
-
+		
 		// sdf
 		System.out.println(1.0 - 0.42);
 		System.out.println(4.015 * 100);
 		System.out.println(123.3 / 100);
-
+		
 		float f1 = 262144.00f;
 		float f2 = 262144.01f;
-		if (f1 == f2)
-		{
+		if (f1 == f2) {
 			System.out.println("由于精度的限制两个浮点数后面的位不能够比较被默认为相同，因此两个数被判定为相等");
 		}
-
+		
 		float f3 = 26214444466232326.00f;
 		System.out.println(f3);
-
+		
 		BigDecimal big1 = new BigDecimal(0.01);
 		BigDecimal big2 = new BigDecimal(0.05);
 		System.out.println(big1.add(big2));
-
+		
 		BigDecimal big3 = new BigDecimal("0.01");
 		BigDecimal big4 = new BigDecimal("0.05");
 		System.out.println(big3.add(big4));
-
 	}
-
+	
 }
