@@ -12,4 +12,6 @@ encoding//src/db/access/SqlServerConnection.java=UTF-8
 encoding//src/design/model/builder/ConcreteBuilder.java=gb2312
 encoding//src/design/model/builder/ModelBuilder.java=gb2312
 encoding//src/log4j.properties=UTF-8
+encoding//src/net/access/cdut/AccessCdut.java=UTF-8
 encoding//src/net/access/cdut/ConnectionTest.java=gbk
+encoding/<project>=UTF-8
