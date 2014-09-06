@@ -25,7 +25,6 @@ public class FloatTest
 		if (f1 == f2) {
 			System.out.println("由于精度的限制两个浮点数后面的位不能够比较被默认为相同，因此两个数被判定为相等");
 		}
-		
 		float f3 = 26214444466232326.00f;
 		System.out.println(f3);
 		
