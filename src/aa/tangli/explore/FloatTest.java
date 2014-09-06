@@ -10,7 +10,6 @@ public class FloatTest
 	 */
 	public static void main(String[] args)
 	{
-
 		System.out.println(0.05 + 0.01);
 		System.out.println(0.05f + 0.01f);
 		System.out.println(0.06);
