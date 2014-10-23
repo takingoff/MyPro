@@ -1,14 +1,2 @@
-/META-INF/
-/aa/
-/annotation/
-/arithmetic/
-/atm/
-/db/
-/design/
-/file/
-/log4/
-/log4j.properties
-/memory/
-/myjava/
-/net/
-/packageInfo/
+/META-INF
+/exception

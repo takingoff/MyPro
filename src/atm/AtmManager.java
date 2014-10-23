@@ -2,6 +2,7 @@ package atm;
 
 
 
+
 public class AtmManager
 {
 	
@@ -11,6 +12,5 @@ public class AtmManager
 		frame.setVisible(true);
 		frame.uiWelcome();
 	}
-	
 	
 }

@@ -1,5 +1,7 @@
 package aa.tangli.explore;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
@@ -12,8 +14,9 @@ public class DateTest
 	/**
 	 * @param args
 	 * @throws ParseException 
+	 * @throws UnsupportedEncodingException 
 	 */
-	public static void main(String[] args) throws ParseException
+	public static void main(String[] args) throws Exception
 	{
 		
 		Date date = new Date();
@@ -35,6 +38,9 @@ public class DateTest
 		String s = "olde string";
 		changeString(s);
 		System.out.println(s);
+		
+		String url = "|";
+		System.out.println(URLEncoder.encode(url, "utf-8"));
 	}
 	
 	
