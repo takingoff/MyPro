@@ -30,8 +30,11 @@
 			<version>1.2.8</version>
 		</dependency>
 
-
-
+		<dependency>
+			<groupId>cn.guoyukun.jdbc</groupId>
+			<artifactId>oracle-ojdbc6</artifactId>
+			<version>11.2.0.3.0</version>
+		</dependency>
 
 
 	</dependencies>
