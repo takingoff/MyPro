@@ -6,8 +6,10 @@ package db.access;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+
 
 /**
  * @author TangLi
@@ -32,15 +34,25 @@ public class OracleConnection
 			Connection con= DriverManager.getConnection(url,user,password);
 			
 			
+			
+			PreparedStatement pst = con.prepareStatement("select * from user_tab_columns where table_name=?");
+			pst.setString(1, "E0301_FLT");
+			ResultSet r = pst.executeQuery();
+			while(r.next())
+			{
+				System.out.print(r.getString(2)+"　");
+			}
+			
+			
 			Statement s = con.createStatement(); 
-			ResultSet r = s.executeQuery("select * from e0301_flt where rownum <10");
-			
-			while (r.next())
-				System.out.println(r.getString(1)); 
-			
-			
+			ResultSet r2 = s.executeQuery("select distinct AIR_LINE from E0301_FLT f where rownum <100 and length(AIR_LINE) >10");
+			while (r2.next())
+			{
+				System.out.println(r2.getString(1)); 
+			}
 			
 			r.close();
+			r2.close();
 			s.close();
 			con.close();
 			
@@ -49,11 +61,6 @@ public class OracleConnection
 		{
 			ex.printStackTrace();
 		}
-		
-
-		
-		
-		
 		
 		
 	}
