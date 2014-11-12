@@ -7,12 +7,17 @@ package io;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintStream;
+import java.io.PushbackInputStream;
+import java.io.SequenceInputStream;
 import java.io.Serializable;
 
 /**
@@ -29,7 +34,12 @@ public class TIO implements Serializable
 		// readObject();
 		// dataRead();
 		// byteArray();
-		charRead();
+		// charRead();
+		
+//		sequenceStream();
+		
+//		pushBackStream();
+		printStream();
 	}
 
 	public String name = "TIO";
@@ -112,7 +122,70 @@ public class TIO implements Serializable
 		
 		isr.close();
 		
-		
 	}
 
+	
+	public static void sequenceStream()throws Exception
+	{
+		
+		InputStream is1= new FileInputStream(new File("text.txt"));
+		InputStream is2 = new FileInputStream(new File("text2.txt"));
+		SequenceInputStream sis = new SequenceInputStream(is1, is2);
+		
+		DataInputStream dis = new DataInputStream(sis);
+
+		try
+		{
+			while(true)
+			{
+				System.out.println(dis.readChar());
+			}
+			
+		}catch(EOFException e)
+		{
+			
+		}
+		sis.close();
+		is1.close();
+		is2.close();
+	}
+	
+	public static void pushBackStream()throws Exception
+	{
+		InputStream is = new FileInputStream(new File("text.txt"));
+		PushbackInputStream pis = new PushbackInputStream(is,8);
+		
+		System.out.println("/*read three byte*/");
+		System.out.println(pis.read());
+		System.out.println(pis.read());
+		System.out.println(pis.read());
+		
+		pis.unread(new byte[]{1,1,1});
+		
+//		pis.skip(2);
+		
+		System.out.println("/*after pushback three 1 ,then read three byte*/");
+		System.out.println(pis.read());
+		System.out.println(pis.read());
+		System.out.println(pis.read());
+		
+		pis.close();
+		is.close();
+		
+	}
+	
+	
+	
+	public static void printStream()throws Exception
+	{
+		
+		PrintStream ps = new PrintStream(new File("print.txt"));
+		ps.print(false);
+		ps.print(12);
+		
+		System.err.println("err print");
+		ps.close();
+	}
+	
+	
 }
