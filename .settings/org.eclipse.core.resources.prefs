@@ -15,3 +15,4 @@ encoding//src/log4j.properties=UTF-8
 encoding//src/net/access/cdut/AccessCdut.java=UTF-8
 encoding//src/net/access/cdut/ConnectionTest.java=gbk
 encoding/<project>=UTF-8
+encoding/text.txt=UTF-16
