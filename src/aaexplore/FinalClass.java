@@ -2,7 +2,7 @@
  *	2014年10月23日 下午2:32:33
  *	TangLi
  */
-package aa.explore;
+package aaexplore;
 
 import java.util.ArrayList;
 import java.util.List;

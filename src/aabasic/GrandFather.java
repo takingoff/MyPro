@@ -1,4 +1,4 @@
-package aa.basic;
+package aabasic;
 
 public class GrandFather
 {

@@ -1,4 +1,4 @@
-package aa.explore;
+package aaexplore;
 
 import java.applet.Applet;
 import java.awt.Button;

@@ -1,4 +1,4 @@
-package aa.explore;
+package aaexplore;
 
 //: ShowMethods.java 
 // Using Java 1.1 reflection to show all the  

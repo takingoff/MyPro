@@ -1,8 +1,7 @@
 eclipse.preferences.version=1
-encoding//src/aa/explore=UTF-8
-encoding//src/aa/explore/FloatTest.java=gb2312
-encoding//src/aa/explore/MyApplet.java=UTF-8
-encoding//src/aa/explore/MyThread.java=gbk
+encoding//src/aaexplore=UTF-8
+encoding//src/aaexplore/MyApplet.java=UTF-8
+encoding//src/aaexplore/MyThread.java=gbk
 encoding//src/annotation/AnnotationTest.java=UTF-8
 encoding//src/annotation/MyAnnotation.java=UTF-8
 encoding//src/atm/AccountManager.java=UTF-8

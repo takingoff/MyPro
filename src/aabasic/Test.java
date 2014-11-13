@@ -1,4 +1,4 @@
-package aa.basic;
+package aabasic;
 
 import java.lang.ref.PhantomReference;
 import java.lang.ref.Reference;
