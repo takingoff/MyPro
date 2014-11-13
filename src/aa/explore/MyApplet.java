@@ -1,4 +1,4 @@
-package aa.tangli.explore;
+package aa.explore;
 
 import java.applet.Applet;
 import java.awt.Button;

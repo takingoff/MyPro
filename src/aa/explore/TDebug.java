@@ -2,7 +2,7 @@
  *	2014年10月27日 下午2:09:03
  *	TangLi
  */
-package aa.tangli.explore;
+package aa.explore;
 
 /**
  * @author TangLi

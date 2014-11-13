@@ -1,4 +1,4 @@
-package myjava.basic;
+package aa.basic;
 
 import java.lang.ref.PhantomReference;
 import java.lang.ref.Reference;

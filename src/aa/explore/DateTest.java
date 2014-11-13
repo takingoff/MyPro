@@ -1,4 +1,4 @@
-package aa.tangli.explore;
+package aa.explore;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

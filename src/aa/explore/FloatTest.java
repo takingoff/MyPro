@@ -1,4 +1,4 @@
-package aa.tangli.explore;
+package aa.explore;
 
 import java.math.BigDecimal;
 
@@ -13,7 +13,7 @@ public class FloatTest
 		System.out.println(0.05 + 0.01);
 		System.out.println(0.05f + 0.01f);
 		System.out.println(0.06);
-		System.out.println("0.06转为二进制就是无限不循环");
+		System.out.println("0.06转为锟斤拷锟斤拷锟狡撅拷锟斤拷锟斤拷锟睫诧拷循锟斤拷");
 		
 		// sdf
 		System.out.println(1.0 - 0.42);
@@ -23,7 +23,7 @@ public class FloatTest
 		float f1 = 262144.00f;
 		float f2 = 262144.01f;
 		if (f1 == f2) {
-			System.out.println("由于精度的限制两个浮点数后面的位不能够比较被默认为相同，因此两个数被判定为相等");
+			System.out.println("锟斤拷锟节撅拷锟饺碉拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷位锟斤拷锟杰癸拷锟饺较憋拷默锟斤拷为锟斤拷同锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷卸锟轿拷锟斤拷");
 		}
 		float f3 = 26214444466232326.00f;
 		System.out.println(f3);
