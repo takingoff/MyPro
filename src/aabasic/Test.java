@@ -22,12 +22,11 @@ public class Test
 	public static void main(String[] args) throws Exception
 	{
 
-		
-		testClass();
-		// testWeakReference();
-		
-		//testPhantomReference();
-		
+		// testClass();
+		testWeakReference();
+
+		// testPhantomReference();
+
 		// testMathRound();
 
 		// testSet();
@@ -42,42 +41,47 @@ public class Test
 
 	}
 
-	
-	
-	
-	
-	public static void testClass() throws ClassNotFoundException
+	public static void testClass() throws Exception
 	{
-//		MySynchronizedClass ms = new MySynchronizedClass();
-		Class.forName("myjava.basic.MySynchronizedClass",true,Test.class.getClassLoader());
-		
+		// MySynchronizedClass ms = new MySynchronizedClass();
+		Class.forName("aabasic.MySynchronizedClass", true, Test.class.getClassLoader()).newInstance();
+
 	}
-	
+
 	public static void testWeakReference()
 	{
-		ReferenceQueue<MySynchronizedClass> rq = new ReferenceQueue<MySynchronizedClass>();
-
+		ReferenceQueue<MySynchronizedClass> queue = new ReferenceQueue<MySynchronizedClass>();
 		List<WeakReference<MySynchronizedClass>> list = new ArrayList<WeakReference<MySynchronizedClass>>();
+
+		System.out.println("////////////////添加5个弱引用");
 		for (int i = 1; i < 6; i++)
 		{
-			MyWeakReference reference = new MyWeakReference(
-					new MySynchronizedClass(i, "str" + i), rq);
+			MyWeakReference reference = new MyWeakReference(new MySynchronizedClass(i, "str" + i), queue);
 			list.add(reference);
+		}
+
+		System.out.println("////////////////ReferenceQueue中查看是否有引用被回收");
+		Reference<? extends MySynchronizedClass> ref = null;
+		while ((ref = queue.poll()) != null)
+		{
+			MyWeakReference r = (MyWeakReference) ref;
+			System.out.println(" In queue and the referent is still avaliable --data is :" + r.data);
 		}
 
 		// 提醒依次垃圾回收器，但是不会保证立刻执行！等空闲了系统才会执行回收。回收之前先执行finalize函数，之后
 		// Reference的get方法返回null,
 		// 但是并不是说Reference就被加入到Queue，这是不能确定的，但是基本上申明一个大空间的数组后，马上就可以看到Reference被加入到queue中。
+
+		System.out.println("///////////////执行一次gc并且声明一个8388608（8M）字节的数组");
 		System.gc();
-
+		@SuppressWarnings("unused")
 		byte[] b = new byte[8 * 1024 * 1024];
-		System.out.println(b.length);
 
-		Reference<? extends MySynchronizedClass> ref = null;
-		while ((ref = rq.poll()) != null)
+		System.out.println("////////////////再次在ReferenceQueue中查看是否有引用被回收");
+		while ((ref = queue.poll()) != null)
 		{
-			MyWeakReference r = (MyWeakReference)ref;
-			System.out.println(" In queue and the referent is : "+ ref.get() + "--data is :" +r.data );
+			MyWeakReference r = (MyWeakReference) ref;
+			System.out.println(" In queue and the referent is still avaliable --data is :" + r.data);
 		}
 
 	}
@@ -89,8 +93,7 @@ public class Test
 		List<PhantomReference<MySynchronizedClass>> list = new ArrayList<PhantomReference<MySynchronizedClass>>();
 		for (int i = 1; i < 6; i++)
 		{
-			MyPhantomReference reference = new MyPhantomReference(
-					new MySynchronizedClass(i, "str" + i), rq);
+			MyPhantomReference reference = new MyPhantomReference(new MySynchronizedClass(i, "str" + i), rq);
 			list.add(reference);
 		}
 
@@ -99,12 +102,12 @@ public class Test
 		// 但是不管怎样 phantomReference 不会被加入到 queue中。除非对象被完全释放掉！
 		System.gc();
 
-//		byte[] b = new byte[8 * 1024 * 1024];
+		// byte[] b = new byte[8 * 1024 * 1024];
 		// byte[] b1 = new byte[8 * 1024 * 1024];
 		// byte[] b2 = new byte[8 * 1024 * 1024];
 		// byte[] b3 = new byte[8 * 1024 * 1024];
 		// byte[] b4 = new byte[8 * 1024 * 1024];
-//		System.out.println(b.length);
+		// System.out.println(b.length);
 
 		Reference<? extends MySynchronizedClass> ref = null;
 
@@ -113,8 +116,8 @@ public class Test
 			System.gc();
 			while ((ref = rq.poll()) != null)
 			{
-				MyPhantomReference r = (MyPhantomReference)ref;
-				System.out.println(" In queue and the referent is : "+ ref.get() + "--data is :" +r.data );
+				MyPhantomReference r = (MyPhantomReference) ref;
+				System.out.println(" In queue and the referent is : " + ref.get() + "--data is :" + r.data);
 			}
 		}
 	}
@@ -124,8 +127,7 @@ public class Test
 
 		public int data;
 
-		public MyWeakReference(MySynchronizedClass referent,
-				ReferenceQueue<? super MySynchronizedClass> q)
+		public MyWeakReference(MySynchronizedClass referent, ReferenceQueue<? super MySynchronizedClass> q)
 		{
 			super(referent, q);
 			data = referent.property1;
@@ -137,8 +139,7 @@ public class Test
 
 		public int data;
 
-		public MyPhantomReference(MySynchronizedClass referent,
-				ReferenceQueue<? super MySynchronizedClass> q)
+		public MyPhantomReference(MySynchronizedClass referent, ReferenceQueue<? super MySynchronizedClass> q)
 		{
 			super(referent, q);
 			data = referent.property1;
@@ -176,6 +177,7 @@ public class Test
 
 	public static void testSet()
 	{
+		System.out.println("set 中不允许重复对象，怎么判断对象是否重复呢？通过判断其hashCode值是否相同。");
 		HashSet<MySynchronizedClass> set = new HashSet<MySynchronizedClass>();
 		set.add(new MySynchronizedClass());
 		set.add(new MySynchronizedClass());
@@ -199,14 +201,12 @@ public class Test
 		msc.name[1] = "new Name ";
 		System.out.println(mscClone.name[1]);
 
-		System.out
-				.println("String 虽然是引用类型但是由于它是常量没有必要深拷贝----------------------------------");
+		System.out.println("String 可以不用深拷贝，浅拷贝就行了，----------------------------------");
 		System.out.println(mscClone.property2);
 		msc.property2 = "new String";
 		System.out.println(mscClone.property2);
 
-		System.out
-				.println("char[] 数组是引用类型需要深拷贝----------------------------------");
+		System.out.println("char[] 数组是引用类型需要深拷贝----------------------------------");
 		System.out.println(mscClone.cs[1]);
 		msc.cs[1] = 'n';
 		System.out.println(mscClone.cs[1]);
@@ -248,8 +248,7 @@ public class Test
 		{
 			e.printStackTrace();
 		}
-		System.out
-				.println("main thread will change table structure right now ------------");
+		System.out.println("main thread will change table structure right now ------------");
 		table.put("sd", "sd");
 	}
 
@@ -273,8 +272,7 @@ public class Test
 		{
 			e.printStackTrace();
 		}
-		System.out
-				.println("main thread will change map structure right now ------------");
+		System.out.println("main thread will change map structure right now ------------");
 		map.put("sd", "sd");
 	}
 
