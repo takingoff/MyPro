@@ -1,48 +1,35 @@
 package design.model.singleton;
 
-class StudentNumber
+public class ModelSingleton
 {
-	private static StudentNumber instance = null;
-	public  static StudentNumber getInstance()
+
+	public static void main(String[] args)
 	{
-		if(instance == null)
+		Singleton sn = Singleton.getInstance();
+		System.out.println(sn.resorce);
+	}
+}
+
+class Singleton
+{
+	private static Singleton instance = null;
+	private static Object obj = new Object(); // ////一定是所有线程共有的对象用于锁定。
+
+	public static Singleton getInstance()
+	{
+		if (instance == null)
 		{
-			instance = new StudentNumber();
+			synchronized (obj)
+			{
+				if (instance == null) // //双检测，
+					instance = new Singleton();
+
+			}
 			return instance;
 		}
 		return instance;
 	}
-	private String number;
-	private Object someProperty;
-	
-	public String getNumber()
-	{
-		return number;
-	}
-	public void setNumber(String number)
-	{
-		this.number = number;
-	}
-	public Object getSomeProperty()
-	{
-		return someProperty;
-	}
-	public void setSomeProperty(Object someProperty)
-	{
-		this.someProperty = someProperty;
-	}
 
-}
+	public String resorce = "some resorce";
 
-public class ModelSingleton
-{
-	
-	public static void main(String[] args)
-	{
-		StudentNumber sn = StudentNumber.getInstance();
-		sn.setNumber("201005070204");
-		System.out.println(sn.getNumber());
-			
-		
-	}
 }
