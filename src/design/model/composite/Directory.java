@@ -34,7 +34,7 @@ public class Directory extends Component
 	@Override
 	public void operation()
 	{
-		System.out.println(this.name + "×öÁËÄ³Ğ©²Ù×÷£¡");
+		System.out.println(this.name + "åšäº†æŸäº›æ“ä½œï¼");
 	}
 	@Override
 	public void  printStruct(int level)

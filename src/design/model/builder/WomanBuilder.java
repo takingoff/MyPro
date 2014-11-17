@@ -22,7 +22,8 @@ public class WomanBuilder extends PeopleBuilder
 	@Override
 	public void builderSex()
 	{
-		this.people.sex = "woman";
+		this.people.sex = "女";
+		System.out.println("做大量创建女性时的工作。");
 	}
 
 }
