@@ -1,29 +1,31 @@
 /**
- *	2014年11月14日 下午3:34:23
+ *	2014年11月17日 上午10:10:48
  *	TangLi
  */
 package design.model.builder;
 
 /**
  * @author TangLi
- * 2014年11月14日下午3:34:23
+ * 2014年11月17日上午10:10:48
  */
 public class Test
 {
 	
 	public static void main(String[] ar)
 	{
-		Diractor d = new Diractor();
-		Builder b1 = new BuilderA();
-		Builder b2 = new BuilderB();
-		d.construct(b1);
-		d.construct(b2);
 		
-		System.out.println(b1.getResult());
-		System.out.println(b2.getResult());
-		
-	}
+		Diractor diractor = new Diractor();
+		PeopleBuilder man = new ManBuilder("小明",21);
+		PeopleBuilder woman = new WomanBuilder("小红",21);
 
+		diractor.create(woman);
+		diractor.create(man);
+		
+		
+		System.out.println(man.getResult());
+		System.out.println(woman.getResult());
+	}
+	
 	
 	
 }
