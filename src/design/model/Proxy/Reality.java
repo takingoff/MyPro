@@ -8,7 +8,7 @@ package design.model.Proxy;
  * @author TangLi
  * 2014年11月13日下午1:53:20
  */
-public class Reality 
+public class Reality implements IExposeAll
 {
 
 	public void abilityA()
