@@ -17,7 +17,8 @@ public class ShowMethods
 		try
 		{
 
-			Class<?> c = Class.forName("aaexplore.ShowMethods");
+			
+			Class<?> c = Class.forName(ShowMethods.class.getName());
 			Method[] m = c.getMethods();
 			Constructor[] ctor = c.getConstructors();
 			Field[] fields = c.getFields();
@@ -29,6 +30,9 @@ public class ShowMethods
 				System.out.println(ctor[i].toString());
 			for (int i = 0; i < fields.length; i++)
 				System.out.println(fields[i].toString());
+			
+			
+			ShowMethods.class.getAnnotations();
 			
 			//////////private 修饰的方法和属性是不能够访问的。
 		}
