@@ -37,4 +37,17 @@ public class FloatTest
 		System.out.println(big3.add(big4));
 	}
 	
+	
+	
+	public static void testMathRound()
+	{
+		System.out.println(Math.round(11.4));
+		System.out.println(Math.round(-11.4));
+
+		System.out.println(Math.round(11.5));
+		System.out.println(Math.round(-11.5));
+
+		System.out.println(Math.round(11.6));
+		System.out.println(Math.round(-11.6));
+	}
 }
