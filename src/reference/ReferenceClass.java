@@ -1,11 +1,11 @@
-package aabasic;
+package reference;
 
-public class  MySynchronizedClass implements Cloneable
+public class  ReferenceClass implements Cloneable
 {
 	
 	static
 	{
-		System.out.println("this is from MySynchronizedClass's static chunk ");
+		System.out.println("this is from referenceClass's static chunk ");
 	}
 	
 	public int property1 = 1;
@@ -14,14 +14,14 @@ public class  MySynchronizedClass implements Cloneable
 	
 	public char[] cs = {'a','b','c'};
 	
-	public MySynchronizedClass(int property1,String property2)
+	public ReferenceClass(int property1,String property2)
 	{
 		this.property1 = property1;
 		this.property2 = property2;
 		System.out.println("enter  contain parameters constructor ");
 	}
 	
-	public MySynchronizedClass()
+	public ReferenceClass()
 	{
 		System.out.println("enter no parameter constructor ");
 	}
@@ -96,7 +96,7 @@ public class  MySynchronizedClass implements Cloneable
 	@Override
 	protected void finalize() throws Throwable
 	{
-		System.out.println("MySynchronizedClass finalizing ...property1 :" + property1 + "---property2" + property2);
+		System.out.println("referenceClass finalizing ...property1 :" + property1 + "---property2" + property2);
 		super.finalize();
 	}
 	

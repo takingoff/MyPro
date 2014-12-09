@@ -1,4 +1,4 @@
-package aabasic;
+package reference;
 
 import java.lang.ref.PhantomReference;
 import java.lang.ref.Reference;
@@ -9,6 +9,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
+
+import synchronize.Child;
+import synchronize.Father;
+import synchronize.GrandFather;
 
 public class Test
 {
@@ -22,8 +26,8 @@ public class Test
 	public static void main(String[] args) throws Exception
 	{
 
-		// testClass();
-		testWeakReference();
+		 testClass();
+//		testWeakReference();
 
 		// testPhantomReference();
 
@@ -43,25 +47,26 @@ public class Test
 
 	public static void testClass() throws Exception
 	{
-		// MySynchronizedClass ms = new MySynchronizedClass();
-		Class.forName("aabasic.MySynchronizedClass", true, Test.class.getClassLoader()).newInstance();
+		// RererenceClass ms = new RererenceClass();
+		Class.forName("reference.RererenceClass", true, Test.class.getClassLoader()).newInstance();
+//		Class.forName("reference.RererenceClass", true, String.class.getClassLoader()).newInstance();
 
 	}
 
 	public static void testWeakReference()
 	{
-		ReferenceQueue<MySynchronizedClass> queue = new ReferenceQueue<MySynchronizedClass>();
-		List<WeakReference<MySynchronizedClass>> list = new ArrayList<WeakReference<MySynchronizedClass>>();
+		ReferenceQueue<ReferenceClass> queue = new ReferenceQueue<ReferenceClass>();
+		List<WeakReference<ReferenceClass>> list = new ArrayList<WeakReference<ReferenceClass>>();
 
 		System.out.println("////////////////添加5个弱引用");
 		for (int i = 1; i < 6; i++)
 		{
-			MyWeakReference reference = new MyWeakReference(new MySynchronizedClass(i, "str" + i), queue);
+			MyWeakReference reference = new MyWeakReference(new ReferenceClass(i, "str" + i), queue);
 			list.add(reference);
 		}
 
 		System.out.println("////////////////ReferenceQueue中查看是否有引用被回收");
-		Reference<? extends MySynchronizedClass> ref = null;
+		Reference<? extends ReferenceClass> ref = null;
 		while ((ref = queue.poll()) != null)
 		{
 			MyWeakReference r = (MyWeakReference) ref;
@@ -88,12 +93,12 @@ public class Test
 
 	public static void testPhantomReference()
 	{
-		ReferenceQueue<MySynchronizedClass> rq = new ReferenceQueue<MySynchronizedClass>();
+		ReferenceQueue<ReferenceClass> rq = new ReferenceQueue<ReferenceClass>();
 
-		List<PhantomReference<MySynchronizedClass>> list = new ArrayList<PhantomReference<MySynchronizedClass>>();
+		List<PhantomReference<ReferenceClass>> list = new ArrayList<PhantomReference<ReferenceClass>>();
 		for (int i = 1; i < 6; i++)
 		{
-			MyPhantomReference reference = new MyPhantomReference(new MySynchronizedClass(i, "str" + i), rq);
+			MyPhantomReference reference = new MyPhantomReference(new ReferenceClass(i, "str" + i), rq);
 			list.add(reference);
 		}
 
@@ -109,7 +114,7 @@ public class Test
 		// byte[] b4 = new byte[8 * 1024 * 1024];
 		// System.out.println(b.length);
 
-		Reference<? extends MySynchronizedClass> ref = null;
+		Reference<? extends ReferenceClass> ref = null;
 
 		while (true)
 		{
@@ -122,45 +127,28 @@ public class Test
 		}
 	}
 
-	static class MyWeakReference extends WeakReference<MySynchronizedClass>
+	static class MyWeakReference extends WeakReference<ReferenceClass>
 	{
 
 		public int data;
 
-		public MyWeakReference(MySynchronizedClass referent, ReferenceQueue<? super MySynchronizedClass> q)
+		public MyWeakReference(ReferenceClass referent, ReferenceQueue<? super ReferenceClass> q)
 		{
 			super(referent, q);
 			data = referent.property1;
 		}
 	}
 
-	static class MyPhantomReference extends PhantomReference<MySynchronizedClass>
+	static class MyPhantomReference extends PhantomReference<ReferenceClass>
 	{
 
 		public int data;
 
-		public MyPhantomReference(MySynchronizedClass referent, ReferenceQueue<? super MySynchronizedClass> q)
+		public MyPhantomReference(ReferenceClass referent, ReferenceQueue<? super ReferenceClass> q)
 		{
 			super(referent, q);
 			data = referent.property1;
 		}
-	}
-
-	public static void testGeneric()
-	{
-		ArrayList<? super GrandFather> array = new ArrayList<GrandFather>();
-		// 可以放 GrandFather的某一个父类实例， 因此GrandFather的所有子类包括 GrandFather的实例
-		array.add(new GrandFather());
-		array.add(new Father());
-		array.add(new Child());
-		// array.add(new Object());
-
-		ArrayList<? extends Child> a2 = new ArrayList<Child>();
-		// 是T的某种子类，能放入子类的容器不一定放入超类，也就是没可能放入T
-		// a2.add(new Father());
-		// a2.add(new GrandFather());
-		a2.add(null);
-
 	}
 
 	public static void testMathRound()
@@ -178,18 +166,18 @@ public class Test
 	public static void testSet()
 	{
 		System.out.println("set 中不允许重复对象，怎么判断对象是否重复呢？通过判断其hashCode值是否相同。");
-		HashSet<MySynchronizedClass> set = new HashSet<MySynchronizedClass>();
-		set.add(new MySynchronizedClass());
-		set.add(new MySynchronizedClass());
+		HashSet<ReferenceClass> set = new HashSet<ReferenceClass>();
+		set.add(new ReferenceClass());
+		set.add(new ReferenceClass());
 
 		System.out.println(set.size());
 	}
 
 	public static void testClone() throws CloneNotSupportedException
 	{
-		MySynchronizedClass msc = new MySynchronizedClass(7, "ss");
+		ReferenceClass msc = new ReferenceClass(7, "ss");
 
-		MySynchronizedClass mscClone = (MySynchronizedClass) msc.clone();
+		ReferenceClass mscClone = (ReferenceClass) msc.clone();
 
 		System.out.println("int 值类型不需要深拷贝。----------------------------------");
 		System.out.println(mscClone.property1);
@@ -210,20 +198,6 @@ public class Test
 		System.out.println(mscClone.cs[1]);
 		msc.cs[1] = 'n';
 		System.out.println(mscClone.cs[1]);
-	}
-
-	public static void testSynchronizedWaitAndNotify()
-	{
-
-		MySynchronizedClass msc = new MySynchronizedClass(7, "ss");
-
-		TSynchronizeA ta = new TSynchronizeA(msc);
-		Thread th = new Thread(ta);
-		th.start();
-
-		TSynchronizeB tb = new TSynchronizeB(msc);
-		Thread th2 = new Thread(tb);
-		th2.start();
 	}
 
 	public static void testHashTable()
@@ -351,9 +325,9 @@ public class Test
 	public static class TSynchronizeA implements Runnable
 	{
 
-		private MySynchronizedClass msc;
+		private ReferenceClass msc;
 
-		public TSynchronizeA(MySynchronizedClass msc)
+		public TSynchronizeA(ReferenceClass msc)
 		{
 			this.msc = msc;
 		}
@@ -370,9 +344,9 @@ public class Test
 	public static class TSynchronizeB implements Runnable
 	{
 
-		private MySynchronizedClass msc;
+		private ReferenceClass msc;
 
-		public TSynchronizeB(MySynchronizedClass msc)
+		public TSynchronizeB(ReferenceClass msc)
 		{
 			this.msc = msc;
 		}
