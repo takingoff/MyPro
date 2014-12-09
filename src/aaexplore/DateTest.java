@@ -35,18 +35,10 @@ public class DateTest
 		System.out.println(format1.format(date));
 		
 		
-		String s = "olde string";
-		changeString(s);
-		System.out.println(s);
-		
 		String url = "|";
 		System.out.println(URLEncoder.encode(url, "utf-8"));
 	}
 	
 	
-	public static void  changeString(String s)
-	{
-		s = "new Sting !!";
-	}
 
 }
