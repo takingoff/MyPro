@@ -17,6 +17,11 @@ public class TString
 		{
 			System.out.println(s);
 		}
+		
+		Runtime.getRuntime().exit(1);
+		System.exit(1);
 	}
 	
+	
 }
+
