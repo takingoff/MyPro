@@ -9,6 +9,7 @@ package tclass;
  */
 class Candy
 {
+	static public String staticField =  "this field is come from candy";
 	public Candy()
 	{
 		System.out.println("candy construction");
@@ -51,12 +52,24 @@ public class Test
 {
 	public static void main(String[] args)throws Exception
 	{
-		new Candy();
-		System.out.println("--------------先父后子，先静态");
-		new AppleCandy();
-		System.out.println("--------------");
+//		System.out.println("before access father's static Field by child class");
+//		System.out.println(AppleCandy.staticField);
+//		System.out.println("通过子类访问父类的静态成员，是不会导致子类初始化的，这叫‘被动初始化’\n");
+		
+//		System.out.println("before new a AppleCandy");
+//		new AppleCandy();
+//		System.out.println("先父后子，先初始化（静态）后实例化\n");
+		
+		
+		System.out.println("before access gum's classs");
+		System.out.println(Gum.class.getName());
+		System.out.println("访问class并不会导致初始化！\n");
+
+		System.out.println("before initial gum by reflection.");
 		Class.forName("tclass.Gum").newInstance();
 	}
 }
+
+
 
 
