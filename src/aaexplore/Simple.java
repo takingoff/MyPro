@@ -14,6 +14,7 @@ public class Simple
 	 * this is some "adff"
 	 */
 	public volatile static String StringFeild = "ss";
+	@SuppressWarnings("unused")
 	private int age = 110;
 	protected long longField = 1000L;
 	double doublefield = 12.2;
