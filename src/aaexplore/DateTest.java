@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.UUID;
 
 
 
@@ -37,6 +38,10 @@ public class DateTest
 		
 		String url = "|";
 		System.out.println(URLEncoder.encode(url, "utf-8"));
+		
+		System.out.println(UUID.randomUUID().toString());;
+		
+		
 	}
 	
 	
