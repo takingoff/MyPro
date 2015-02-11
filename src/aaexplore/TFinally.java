@@ -5,7 +5,7 @@ public class TFinally
 
 	public static void main(String[] ars)
 	{
-
+		System.out.println("asdfasds");
 		try
 		{
 			try
