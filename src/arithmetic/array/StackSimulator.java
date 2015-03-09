@@ -4,7 +4,6 @@
  */
 package arithmetic.array;
 
-import java.lang.reflect.Array;
 
 /**
  * @author TangLi
@@ -13,8 +12,8 @@ import java.lang.reflect.Array;
 public class StackSimulator<T>
 {
 	
-	public int stackLen;
-	public T[] stacks;
+	private int stackLen;
+	private T[] stacks;
 	public int current;
 	
 	/**
