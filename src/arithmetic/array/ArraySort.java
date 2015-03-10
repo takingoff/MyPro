@@ -13,7 +13,7 @@ import java.util.Random;
 public class ArraySort
 {
 	
-	public static final int dataLen = 30;
+	public static final int dataLen = 359;
 	
 	public static int[] datas= new int[dataLen];
 	static{
@@ -27,6 +27,17 @@ public class ArraySort
 		for(int i = 0 ;i < dataLen ;i++)
 			System.out.print(datas[i]+ ",");
 		System.out.println("");
+	}
+	
+	private static void checkDatas()
+	{
+		for (int i = 1; i < dataLen; i++)
+			if (datas[i] < datas[i - 1])
+			{
+				System.out.println("xxxxxxx数据排列错误xxxxxxxxxxxx");
+				return;
+			}
+		System.out.println("*******数据排列正确***********");
 	}
 	
 	
@@ -53,7 +64,7 @@ public class ArraySort
 	{
 		for(int i = 0 ;i < datas.length- 1;i ++)
 		{
-			int minIndex  = i;		//自需要增加一个变量即可，不用记录min，min 可以通过 datas[minIndex]得到。
+			int minIndex  = i;		//增加一个变量即可，不用记录min，min 可以通过 datas[minIndex]得到。
 			for(int j = i+1 ;j < datas.length ; j++ )
 				if(datas[minIndex] > datas[j])
 					 minIndex = j;
@@ -61,7 +72,6 @@ public class ArraySort
 			datas[i] = datas[minIndex] + datas[i] - (datas[minIndex] = datas[i]);
 		}
 	}
-	
 	
 	
 	/**
@@ -88,6 +98,62 @@ public class ArraySort
 	}
 	
 	
+	public static void hillSort(int[] datas)
+	{
+		int step = datas.length/2;
+		
+		while(step >0)
+		{
+			for(int i = 0 ;i <= datas.length - step ;i++)
+			{
+				for(int j = i+step ;j < datas.length ;j += step)
+				{
+					int value = datas[j];
+					int mover = j-step;
+					while(mover >= i && datas[mover] > value)
+					{
+						datas[mover+step] = datas[mover];
+						mover -= step;
+					}
+					datas[mover+step] = value;
+				}
+			}
+			
+			step = step/2;
+		}
+		
+	}
+	
+	
+	public static void mergeRecursiveSort(int[] datas)
+	{
+		ArraySort.datas=aMergeRecursiveSort(datas,0,datas.length-1);
+		
+	}
+	
+	public static int[] aMergeRecursiveSort(int[] datas,int begin,int end)
+	{
+		
+		if(begin == end)
+			return new int[]{datas[begin]};
+		
+		int middle  = (begin+end)/2;			
+		int[] sega =  aMergeRecursiveSort(datas, begin, middle);///考虑begin +1 == end 的情况。此时middle等于begin,所以偏移不应该是middle-1
+		int[] segb = aMergeRecursiveSort(datas, middle+1, end);		
+		
+		int[] result = new int[end - begin +1];
+		int i= 0,a=0,b=0;
+		for(;i <result.length && a<sega.length && b<segb.length;)
+			result[i++] = sega[a] > segb[b] ? segb[b++]:sega[a++];
+		
+		while(a<sega.length)
+			result[i++] = sega[a++];
+		while(b<segb.length)
+			result[i++] = segb[b++];
+		
+		return result;
+		
+	}
 	
 	
 	public static void aQuickSort(int begin ,int end ,int[] datas)
@@ -95,24 +161,40 @@ public class ArraySort
 		if(begin >= end)
 			return;
 		
-		int l = begin;
+		////数量小的情况使用插入排序。
+		if(begin + 10 > end )
+		{
+			for(int i = begin+1 ;i <= end;i++)
+			{
+				int value = datas[begin +1];
+				int j = begin + 1;
+				while(--j >0 && datas[j] > datas[i])
+				{
+					datas[j+1]= datas[j];
+				}
+				datas[j+1] = value; 
+			}
+		}
+		
+		////快速排序。
+		int l = begin-1;
 		int h = end;
 		int value = datas[h];
-		
-		while(l < h)
+		while(true)
 		{
-			while(datas[l] <= value && l<h)
-				l++;
+			while(datas[++l] <= value && l<h);	////使用等于符号，
 			if(l<h)
 				datas[h] = datas[l];
 			
-			while(datas[h] >=  value && l<h)
-				h--;
+			while(datas[--h] >=  value && l<h);	
+			
 			if(l<h)
 				datas[l] = datas[h];
+			else
+				break;
 	
 		}
-		datas[l] = value;
+		datas[l] = value;		///最终  h<l 或者 h = l ;但是都是 l位置为洞。
 		aQuickSort(begin,l-1,datas);
 		aQuickSort(l+1,end,datas);
 		
@@ -124,16 +206,18 @@ public class ArraySort
 	}
 	
 	
-	
-	
 	public static void main(String[] ar)
 	{
 		showDatas();
-//		quickSort(datas);
+		quickSort(datas);
 //		bubbleSort(datas);
 //		selectSort(datas);
-		insertSort(datas);
+//		insertSort(datas);
+//		hillSort(datas);
+//		mergeRecursiveSort(datas);
+		
 		showDatas();
+		checkDatas();
 		
 	}
 
