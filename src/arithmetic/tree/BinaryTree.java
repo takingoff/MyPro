@@ -6,65 +6,49 @@ package arithmetic.tree;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * @author TangLi 2015年3月10日下午2:17:58
  */
 public class BinaryTree
 {
-	public static interface T
+
+	public static class Data
 	{
+		public int weight;
 
-		/**
-		 * @param t
-		 * @return 等于返回0 小于返回-1，大于返回1
-		 */
-		public int compareTo(T t);
-
-		public Object getValue();
-	}
-
-	public static class Ttest implements T
-	{
-		private int weight;
-
-		public Ttest(int weight)
+		public Data(int weight)
 		{
-			super();
 			this.weight = weight;
 		}
 
-		@Override
-		public int compareTo(T t)
-		{
-			Ttest target = (Ttest) t;
-			if (target.weight > this.weight)
-				return -1;
-			else if (target.weight < this.weight)
-				return 1;
-			else
-				return 0;
-		}
-
-		@Override
-		public Object getValue()
-		{
-			return this.weight;
-		}
+//		@Override
+//		public T addValue(T t)
+//		{
+//			return new IData((int)t.weight + this.weight);
+//		}
 	}
 
 	public static class Node
 	{
-		public T obj;
+		public Data data;
 		public Node right;
 		public Node left;
 
-		public Node(T value, Node right, Node left)
+		public Node(Data value, Node left, Node right)
 		{
 			super();
-			this.obj = value;
+			this.data = value;
 			this.right = right;
 			this.left = left;
+		}
+
+		public Node(Node cp)
+		{
+			this.data = new Data(cp.data.weight);
+			this.right = cp.right;
+			this.left = cp.left;
 		}
 	}
 
@@ -74,29 +58,39 @@ public class BinaryTree
 	{
 		public void doSomething(Node index);
 	}
-
-	public void traverse(Node index, int type, TraverseHandler handler)
+	
+	private Stack<Boolean> pathStack = new Stack<Boolean>();  //记录遍历路径。
+	/**
+	 * @param index
+	 * @param type	1前序遍历，2中序遍历，其它后序遍历。
+	 * @param handler
+	 * @param isLeft TODO
+	 */
+	public void traverse(Node index, int type, TraverseHandler handler, Boolean isLeft)
 	{
 		if (index == null)
 			return;
+		
+		pathStack.push(isLeft);
 		if (type == 1)
 		{
 			handler.doSomething(index);
-			traverse(index.left, type, handler);
-			traverse(index.right, type, handler);
+			traverse(index.left, type, handler, true);
+			traverse(index.right, type, handler, false);
 		}
 		else if (type == 2)
 		{
-			traverse(index.left, type, handler);
+			traverse(index.left, type, handler, true);
 			handler.doSomething(index);
-			traverse(index.right, type, handler);
+			traverse(index.right, type, handler, false);
 		}
 		else
 		{
-			traverse(index.left, type, handler);
-			traverse(index.right, type, handler);
+			traverse(index.left, type, handler, true);
+			traverse(index.right, type, handler, false);
 			handler.doSomething(index);
 		}
+		pathStack.pop();
 
 	}
 
@@ -107,9 +101,9 @@ public class BinaryTree
 		{
 			if (index == null)
 				return null;
-			else if (index.obj.compareTo(node.obj) == 0)
+			else if (index.data.weight== node.data.weight)
 				return index;
-			else if (index.obj.compareTo(node.obj) == -1)
+			else if (index.data.weight<node.data.weight)
 				index = index.right;
 			else
 				index = index.left;
@@ -124,9 +118,9 @@ public class BinaryTree
 		{
 			if (index == null)
 				return;
-			else if (index.obj.compareTo(node.obj) == 0)
+			else if (index.data.weight==node.data.weight)
 				break;
-			else if (index.obj.compareTo(node.obj) == -1)
+			else if (index.data.weight < node.data.weight)
 			{
 				parent = index;
 				index = index.right;
@@ -136,7 +130,6 @@ public class BinaryTree
 				parent = index;
 				index = index.left;
 			}
-
 		}
 		
 		Node most;
@@ -169,7 +162,7 @@ public class BinaryTree
 		if (parent == null)
 			root = most;
 		// 删除普通节点
-		else if (parent.obj.compareTo(index.obj) == 1)
+		else if (parent.data.weight>index.data.weight)
 			parent.left = most;
 		else
 			parent.right = most;
@@ -187,7 +180,7 @@ public class BinaryTree
 		Node index = root;
 		while (true)
 		{
-			if (index.obj.compareTo(node.obj) == 1) // 小于root的在左边，大于等于在右边。
+			if (index.data.weight >node.data.weight) // 小于root的在左边，大于等于在右边。
 			{
 				if (index.left == null)
 				{
@@ -210,32 +203,64 @@ public class BinaryTree
 		}
 	}
 
-	public static  List<Node> nodes =new LinkedList<Node>();;
+	public static  List<Node> nodes =new LinkedList<Node>();
+	
 	public BinaryTree huffManTree()
 	{
-		BinaryTree tree = new BinaryTree();
-		
 		TraverseHandler handler = new TraverseHandler()
 		{
 			@Override
 			public void doSomething(Node index)
 			{
-				BinaryTree.nodes.add(index);///list添加的是地址而不是copy。
+				BinaryTree.nodes.add(new Node(index.data,null,null));///
 			}
 		};
-		traverse(root,2,handler);
-		
-		
-		Node newRoot = new Node(new Ttest(0),null,null);
+		traverse(root,2,handler, null);
 		
 		Node min1 , min2;
-		
-		
+		while(nodes.size() >1)
+		{
+			min1 = nodes.remove(0);
+			min2 = nodes.remove(0);
+			Node sum = new Node(new Data(min1.data.weight+ min2.data.weight),new Node(min1),new Node(min2));
+			for(int i = 0 ;i <= nodes.size() ;i ++)
+			{
+				if(i== nodes.size() || sum.data.weight<=nodes.get(i).data.weight)
+				{
+					nodes.add(i, sum);
+					break;
+				}
+			}
+		}
+		BinaryTree tree = new BinaryTree();
+		tree.root = nodes.remove(0);
 		return tree;
-		
 	}
 	
-	public void showAll(int type)
+	public void showHuffManCode()
+	{
+		BinaryTree tree = huffManTree();
+		traverse(tree.root, 2, new TraverseHandler()
+		{
+			@Override
+			public void doSomething(Node index)
+			{
+				if(index.left == null && index.right == null)
+				{
+					System.out.print(index.data.weight+"	---");
+					for(Boolean b : pathStack)
+					{
+						if(b!=null)
+							System.out.print(b?"0":"1");
+					}
+					System.out.println("");
+				}
+			}
+		}, null);
+
+	}
+	
+	public void showByType(int type)
 	{
 		String msg;
 		if (type == 1)
@@ -249,41 +274,44 @@ public class BinaryTree
 			@Override
 			public void doSomething(Node index)
 			{
-				System.out.print(index.obj.getValue() + ",");
+				System.out.print(index.data.weight + ",");
 			}
-		});
+		}, null);
 		System.out.println("::" + msg);
 	}
 
 	private static void showAll(BinaryTree tree)
 	{
-		tree.showAll(1);
-		tree.showAll(2);
-		tree.showAll(3);
+		tree.showByType(1);
+		tree.showByType(2);
+		tree.showByType(3);
 	}
 
 	public static void main(String[] ar)
 	{
 		BinaryTree tree = new BinaryTree();
-		tree.add(new Node(new Ttest(10), null, null));
-		tree.add(new Node(new Ttest(12), null, null));
-		tree.add(new Node(new Ttest(8), null, null));
-		tree.add(new Node(new Ttest(7), null, null));
-		tree.add(new Node(new Ttest(22), null, null));
-		tree.add(new Node(new Ttest(14), null, null));
-		tree.add(new Node(new Ttest(6), null, null));
-		tree.add(new Node(new Ttest(19), null, null));
-		tree.add(new Node(new Ttest(9), null, null));
+		tree.add(new Node(new Data(10), null, null));
+		tree.add(new Node(new Data(12), null, null));
+		tree.add(new Node(new Data(8), null, null));
+		tree.add(new Node(new Data(7), null, null));
+		tree.add(new Node(new Data(22), null, null));
+		tree.add(new Node(new Data(14), null, null));
+		tree.add(new Node(new Data(6), null, null));
+		tree.add(new Node(new Data(19), null, null));
+		tree.add(new Node(new Data(9), null, null));
 
 		showAll(tree);
-		tree.del(new Node(new Ttest(10), null, null));
+		tree.del(new Node(new Data(10), null, null));
 		showAll(tree);
-		tree.del(new Node(new Ttest(22), null, null));
+		tree.del(new Node(new Data(22), null, null));
 		showAll(tree);
-		tree.del(new Node(new Ttest(8), null, null));
+		tree.del(new Node(new Data(8), null, null));
 		showAll(tree);
 		
-//		System.out.println(tree.find(new Node(new Ttest(9),null,null)).obj.getValue());;
+		showAll(tree.huffManTree());
+		
+		tree.showHuffManCode();
+		
 
 	}
 
