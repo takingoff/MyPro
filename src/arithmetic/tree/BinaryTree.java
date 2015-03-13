@@ -22,12 +22,6 @@ public class BinaryTree
 		{
 			this.weight = weight;
 		}
-
-//		@Override
-//		public T addValue(T t)
-//		{
-//			return new IData((int)t.weight + this.weight);
-//		}
 	}
 
 	public static class Node
@@ -35,6 +29,10 @@ public class BinaryTree
 		public Data data;
 		public Node right;
 		public Node left;
+		/**
+		 * left depth - right depth
+		 */
+		public int balanceFactor;
 
 		public Node(Data value, Node left, Node right)
 		{
@@ -42,6 +40,7 @@ public class BinaryTree
 			this.data = value;
 			this.right = right;
 			this.left = left;
+			this.balanceFactor = 0;
 		}
 
 		public Node(Node cp)
@@ -58,13 +57,120 @@ public class BinaryTree
 	{
 		public void doSomething(Node index);
 	}
+
+	public int depth(Node node)
+	{
+		if(node== null)
+			return 0;
+		
+		int l = depth(node.left);
+		int r = depth(node.right);
+		return l>r?l++:r++;
+	}
+	
+	/**
+	 * 以node 为轴 向右旋转
+	 * @param node
+	 * @param parent TODO
+	 */
+	private void rightRotate(Node node, Node parent)
+	{
+		Node index = node.left;
+		node.left = index.right;
+		index.right = node;
+	}
+	
+	/**
+	 * 以node 为轴 向左旋转
+	 * @param node
+	 * @param parent TODO
+	 */
+	private void leftRotate(Node node, Node parent)
+	{
+		Node index = node.right;
+		node.right = index.left;
+		index.left = node;
+	}
+	
+	private void relateParent(Node node ,Node parent,boolean isleft)
+	{
+		if(parent == null)
+			root = node;
+		else
+			if(isleft)
+				parent.left = node;
+			else
+				parent.right = node;
+	}
+	
+	/**
+	 * 平衡node 的左右子树。
+	 * @param node 
+	 * @param parent
+	 */
+	public void balanceTree(Node node,Node parent)
+	{
+		if(node.balanceFactor>1)
+		{
+			switch(node.left.balanceFactor)
+			{
+			case 1:
+				rightRotate(node, null);
+				node.left.balanceFactor = 0 ;
+				break;
+			case -1:
+				leftRotate(node.left, null);
+				rightRotate(node, null);
+				if(node.left.right.balanceFactor == 1 )
+				{
+					node.balanceFactor = -1 ;
+					node.left.balanceFactor = 0;
+					node.left.right.balanceFactor = 0;
+				}else
+				{
+					node.balanceFactor = 0 ;
+					node.left.balanceFactor = 1;
+					node.left.right.balanceFactor = 0;
+				}
+				break;
+				
+			}
+			
+		}else if(node.balanceFactor <-1)
+		{
+			switch(node.right.balanceFactor)
+			{
+			case -1:
+				leftRotate(node, null);
+				node.left.balanceFactor = 0 ;
+				break;
+			case 1:
+				rightRotate(node.right, null);
+				leftRotate(node, null);
+				if(node.right.left.balanceFactor == 1 )
+				{
+					node.balanceFactor = 0 ;
+					node.right.balanceFactor = -1;
+					node.right.left.balanceFactor = 0;
+				}else
+				{
+					node.balanceFactor = 1 ;
+					node.right.balanceFactor = 0;
+					node.right.left.balanceFactor = 0;
+				}
+				break;
+				
+			}
+		}
+	}
+	
 	
 	private Stack<Boolean> pathStack = new Stack<Boolean>();  //记录遍历路径。
 	/**
 	 * @param index
 	 * @param type	1前序遍历，2中序遍历，其它后序遍历。
-	 * @param handler
-	 * @param isLeft TODO
+	 * @param handler 
+	 * @param isLeft
 	 */
 	public void traverse(Node index, int type, TraverseHandler handler, Boolean isLeft)
 	{
@@ -169,38 +275,73 @@ public class BinaryTree
 
 	}
 
-	public void add(Node node)
+	public boolean add(Node node,Node parent)
 	{
-		if (root == null)
+		if (parent == null)
 		{
-			root = node;
-			return;
+			return false;
 		}
 
-		Node index = root;
-		while (true)
+		////left add
+		if (parent.data.weight >=node.data.weight) // 小于root的在左边，大于等于在右边。
 		{
-			if (index.data.weight >node.data.weight) // 小于root的在左边，大于等于在右边。
+			if (parent.left != null)
 			{
-				if (index.left == null)
+				if(add(node,parent.left))
 				{
-					index.left = node;
-					return;
+					switch (parent.balanceFactor)
+					{
+					case 0:
+						parent.balanceFactor = 1;
+						return true;
+					case 1:
+						rightRotate(parent, null);	//no break;
+					case -1:
+						parent.balanceFactor = 0 ;
+						return false;
+					}
 				}
-				else
-					index = index.left;
+				return false;
 			}
 			else
 			{
-				if (index.right == null)
+				parent.left = node;
+				parent.balanceFactor ++;
+				return parent.right == null ? true :false;
+			}
+			
+		}
+		/// right add
+		else
+		{
+			if (parent.right != null)
+			{
+				if(add(node,parent.right))
 				{
-					index.right = node;
-					return;
+					switch (parent.balanceFactor)
+					{
+					case 0:
+						parent.balanceFactor = -1;
+						return true;
+					case -1:
+						leftRotate(parent, null);//no break;
+					case 1:
+						parent.balanceFactor = 0 ;
+						return false;
+					}
 				}
-				else
-					index = index.right;
+				return false;
+			}
+			else
+			{
+				parent.right = node;
+				parent.balanceFactor --;
+				return parent.left == null ? true:false;
 			}
 		}
+		
+		
+		
 	}
 
 	public static  List<Node> nodes =new LinkedList<Node>();
