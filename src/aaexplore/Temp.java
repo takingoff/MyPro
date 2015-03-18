@@ -14,7 +14,11 @@ public class Temp
 	public static void main(String[] ar)
 	{
 		
-		System.out.println(Integer.toBinaryString(5));
+		char c = '2';
+		byte b = 2;
+		
+		int d = c+b;
+		System.out.println(d);
 		
 	}
 }

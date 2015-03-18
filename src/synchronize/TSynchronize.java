@@ -7,7 +7,7 @@ package synchronize;
 /**
  * @author TangLi 2014年12月9日上午9:47:33
  */
-public class Test
+public class TSynchronize
 {
 	static public void main(String[] ar)
 	{
