@@ -4,6 +4,9 @@
  */
 package synchronize;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author TangLi
  * 2015年3月18日下午2:22:46
@@ -11,23 +14,25 @@ package synchronize;
 public class TThreadLocal
 {
 
-	 ThreadLocal<Integer> local = new ThreadLocal<Integer>(){
+	HashMap<String,Integer> map = new HashMap<String, Integer>();
+	 ThreadLocal<Map<String,Integer>> local = new ThreadLocal<Map<String,Integer>>(){
 
 		@Override
-		protected Integer initialValue()	///该函数在线程首次调用get时调用，将返回值进行set。如果在线程中事先执行了set该函数将不会调用。
+		protected Map<String,Integer> initialValue()	///该函数在线程首次调用get时调用，将返回值进行set。如果在线程中事先执行了set该函数将不会调用。
 		{
-			return 200;
+			return map;
 		}
 		
 	} ;
 	
 	public TThreadLocal()
 	{
-		local.set(200);
+		local.set(map);
+		map.put("key", 20);
 	}
 	public void addLocal()
 	{
-		local.set(local.get().intValue()+1);
+		local.get().put("key", local.get().get("key")+1);
 	}
 	
 	static class Access extends Thread
@@ -39,7 +44,7 @@ public class TThreadLocal
 			for(int i = 0 ;i < 2; i ++)
 				tlocal.addLocal();
 			
-			System.out.println(tlocal.local.get().intValue());
+			System.out.println(tlocal.local.get().get("key"));
 		}
 		public Access(TThreadLocal tlocal)
 		{
@@ -66,7 +71,7 @@ public class TThreadLocal
 		{
 			e.printStackTrace();
 		}
-		System.out.println(tlocal.local.get().intValue());
+		System.out.println(tlocal.local.get().get("key"));
 		
 		
 		
