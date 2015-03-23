@@ -13,7 +13,8 @@ import java.util.Stack;
  */
 public class BinaryTree
 {
-
+                                                   
+	
 	public static class Data
 	{
 		public int weight;
@@ -43,6 +44,14 @@ public class BinaryTree
 			this.balanceFactor = 0;
 		}
 
+		public Node(Data value)
+		{
+			this.data = value;
+			this.right = null;
+			this.left = null;
+			this.balanceFactor = 0;
+		}
+		
 		public Node(Node cp)
 		{
 			this.data = new Data(cp.data.weight);
@@ -65,105 +74,146 @@ public class BinaryTree
 		
 		int l = depth(node.left);
 		int r = depth(node.right);
-		return l>r?l++:r++;
+		return l>r?++l:++r;
 	}
 	
 	/**
 	 * 以node 为轴 向右旋转
 	 * @param node
 	 * @param parent TODO
+	 * @param isLeft TODO
 	 */
-	private void rightRotate(Node node, Node parent)
+	private void rightRotate(Node node, Node parent, boolean isLeft)
 	{
 		Node index = node.left;
 		node.left = index.right;
 		index.right = node;
+		relateParent(parent, isLeft, index);
 	}
-	
+
+
 	/**
 	 * 以node 为轴 向左旋转
 	 * @param node
 	 * @param parent TODO
+	 * @param isLeft TODO
 	 */
-	private void leftRotate(Node node, Node parent)
+	private void leftRotate(Node node, Node parent, boolean isLeft)
 	{
 		Node index = node.right;
 		node.right = index.left;
 		index.left = node;
+		relateParent(parent, isLeft, index);
 	}
 	
-	private void relateParent(Node node ,Node parent,boolean isleft)
+	/**
+	 * 父节点关联子节点。
+	 * @param parent
+	 * @param isLeft
+	 * @param index
+	 */
+	private void relateParent(Node parent, boolean isLeft, Node index)
 	{
 		if(parent == null)
-			root = node;
+			root = index;
 		else
-			if(isleft)
-				parent.left = node;
+			if(isLeft)
+				parent.left = index;
 			else
-				parent.right = node;
+				parent.right = index;
 	}
+	
 	
 	/**
 	 * 平衡node 的左右子树。
 	 * @param node 
 	 * @param parent
+	 * @param isLeft TODO
+	 * @return 是否经过了平衡处理
 	 */
-	public void balanceTree(Node node,Node parent)
+	private void balanceTree(Node node,Node parent, boolean isLeft)
 	{
-		if(node.balanceFactor>1)
+		if(node.balanceFactor==2)	//左
 		{
 			switch(node.left.balanceFactor)
 			{
-			case 1:
-				rightRotate(node, null);
+			case 1://左
 				node.left.balanceFactor = 0 ;
+				node.balanceFactor = 0 ;
+				rightRotate(node, parent, isLeft);
 				break;
-			case -1:
-				leftRotate(node.left, null);
-				rightRotate(node, null);
-				if(node.left.right.balanceFactor == 1 )
-				{
-					node.balanceFactor = -1 ;
-					node.left.balanceFactor = 0;
-					node.left.right.balanceFactor = 0;
-				}else
-				{
-					node.balanceFactor = 0 ;
-					node.left.balanceFactor = 1;
-					node.left.right.balanceFactor = 0;
-				}
+			case -1://右
+				node.balanceFactor = 0 ;
+				node.left.balanceFactor = 0 ;
+				leftRotate(node.left, node, true);
+				rightRotate(node, parent, isLeft);
 				break;
 				
 			}
 			
-		}else if(node.balanceFactor <-1)
+		}else if(node.balanceFactor ==-2)
 		{
 			switch(node.right.balanceFactor)
 			{
 			case -1:
-				leftRotate(node, null);
-				node.left.balanceFactor = 0 ;
+				node.right.balanceFactor = 0 ;
+				node.balanceFactor = 0 ;
+				leftRotate(node, parent, isLeft);
 				break;
 			case 1:
-				rightRotate(node.right, null);
-				leftRotate(node, null);
-				if(node.right.left.balanceFactor == 1 )
-				{
-					node.balanceFactor = 0 ;
-					node.right.balanceFactor = -1;
-					node.right.left.balanceFactor = 0;
-				}else
-				{
-					node.balanceFactor = 1 ;
-					node.right.balanceFactor = 0;
-					node.right.left.balanceFactor = 0;
-				}
+				node.balanceFactor = 0 ;
+				node.right.balanceFactor = 0;
+				rightRotate(node.right, node, false);
+				leftRotate(node, parent, isLeft);
 				break;
 				
 			}
 		}
 	}
 	
+	private boolean balanceAdd(Node added,Node target,Node targetParent,boolean isLeft)
+	{
+		assert(target != null);
+		int prevDep = depth(targetParent);
+		if(added.data.weight <= target.data.weight )
+		{
+			if(target.left == null)
+			{
+				target.left = added;
+				target.balanceFactor ++;
+			}
+			else
+				target.balanceFactor +=  balanceAdd(added,target.left,target,true)?1:0;
+			
+		}
+		else
+		{
+			if(target.right == null)
+			{
+				target.right = added;
+				target.balanceFactor --;
+			}
+			else
+				target.balanceFactor +=  balanceAdd(added,target.right,target,false)?-1:0;
+		}
+		
+		if(target.balanceFactor >1 || target.balanceFactor < -1)
+		{
+			balanceTree(target, targetParent, isLeft);
+		}
+		return  prevDep < depth(targetParent);
+		
+		
+	}
+
+	public void add(Node node)
+	{
+		if(root == null)
+			root = node;
+		else
+			balanceAdd(node,root,null,root.data.weight >= node.data.weight);
+		
+	}
 	
 	private Stack<Boolean> pathStack = new Stack<Boolean>();  //记录遍历路径。
 	/**
@@ -200,6 +250,7 @@ public class BinaryTree
 
 	}
 
+	
 	public Node find(Node node)
 	{
 		Node index = root;
@@ -215,6 +266,7 @@ public class BinaryTree
 				index = index.left;
 		}
 	}
+	
 	
 	public void del(Node node)
 
@@ -275,75 +327,7 @@ public class BinaryTree
 
 	}
 
-	public boolean add(Node node,Node parent)
-	{
-		if (parent == null)
-		{
-			return false;
-		}
-
-		////left add
-		if (parent.data.weight >=node.data.weight) // 小于root的在左边，大于等于在右边。
-		{
-			if (parent.left != null)
-			{
-				if(add(node,parent.left))
-				{
-					switch (parent.balanceFactor)
-					{
-					case 0:
-						parent.balanceFactor = 1;
-						return true;
-					case 1:
-						rightRotate(parent, null);	//no break;
-					case -1:
-						parent.balanceFactor = 0 ;
-						return false;
-					}
-				}
-				return false;
-			}
-			else
-			{
-				parent.left = node;
-				parent.balanceFactor ++;
-				return parent.right == null ? true :false;
-			}
-			
-		}
-		/// right add
-		else
-		{
-			if (parent.right != null)
-			{
-				if(add(node,parent.right))
-				{
-					switch (parent.balanceFactor)
-					{
-					case 0:
-						parent.balanceFactor = -1;
-						return true;
-					case -1:
-						leftRotate(parent, null);//no break;
-					case 1:
-						parent.balanceFactor = 0 ;
-						return false;
-					}
-				}
-				return false;
-			}
-			else
-			{
-				parent.right = node;
-				parent.balanceFactor --;
-				return parent.left == null ? true:false;
-			}
-		}
-		
-		
-		
-	}
-
+	
 	public static  List<Node> nodes =new LinkedList<Node>();
 	
 	public BinaryTree huffManTree()
@@ -431,25 +415,32 @@ public class BinaryTree
 	public static void main(String[] ar)
 	{
 		BinaryTree tree = new BinaryTree();
-		tree.add(new Node(new Data(10), null, null));
-		tree.add(new Node(new Data(12), null, null));
-		tree.add(new Node(new Data(8), null, null));
-		tree.add(new Node(new Data(7), null, null));
-		tree.add(new Node(new Data(22), null, null));
-		tree.add(new Node(new Data(14), null, null));
-		tree.add(new Node(new Data(6), null, null));
-		tree.add(new Node(new Data(19), null, null));
-		tree.add(new Node(new Data(9), null, null));
+		tree.add(new Node(new Data(10) ));
+		tree.add(new Node(new Data(12) ));
+		tree.add(new Node(new Data(13) ));
+		tree.add(new Node(new Data(14) ));
+		tree.add(new Node(new Data(23) ));
+		tree.add(new Node(new Data(24) ));
+		tree.add(new Node(new Data(53) ));
+		tree.add(new Node(new Data(74) ));
+		tree.add(new Node(new Data(16) ));
+		tree.add(new Node(new Data(18) ));
+		tree.add(new Node(new Data(29) ));
+		tree.add(new Node(new Data(5) ));
+		tree.add(new Node(new Data(6) ));
+		tree.add(new Node(new Data(7) ));
 
-		showAll(tree);
-		tree.del(new Node(new Data(10), null, null));
-		showAll(tree);
-		tree.del(new Node(new Data(22), null, null));
-		showAll(tree);
-		tree.del(new Node(new Data(8), null, null));
-		showAll(tree);
+		System.out.println(tree.depth(tree.root));
 		
-		showAll(tree.huffManTree());
+		showAll(tree);
+//		tree.del(new Node(new Data(10) ));
+//		showAll(tree);
+//		tree.del(new Node(new Data(22) ));
+//		showAll(tree);
+//		tree.del(new Node(new Data(8) ));
+//		showAll(tree);
+//		
+//		showAll(tree.huffManTree());
 		
 		tree.showHuffManCode();
 		

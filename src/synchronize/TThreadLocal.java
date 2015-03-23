@@ -16,11 +16,10 @@ public class TThreadLocal
 
 	HashMap<String,Integer> map = new HashMap<String, Integer>();
 	 ThreadLocal<Map<String,Integer>> local = new ThreadLocal<Map<String,Integer>>(){
-
 		@Override
 		protected Map<String,Integer> initialValue()	///该函数在线程首次调用get时调用，将返回值进行set。如果在线程中事先执行了set该函数将不会调用。
 		{
-			return map;
+			return map;	///返回的是公共引用，相关线程都会共享这个数据。
 		}
 		
 	} ;
