@@ -80,8 +80,6 @@ public class BinaryTree
 	/**
 	 * 以node 为轴 向右旋转
 	 * @param node
-	 * @param parent TODO
-	 * @param isLeft TODO
 	 */
 	private void rightRotate(Node node, Node parent, boolean isLeft)
 	{
@@ -95,8 +93,6 @@ public class BinaryTree
 	/**
 	 * 以node 为轴 向左旋转
 	 * @param node
-	 * @param parent TODO
-	 * @param isLeft TODO
 	 */
 	private void leftRotate(Node node, Node parent, boolean isLeft)
 	{
@@ -128,7 +124,6 @@ public class BinaryTree
 	 * 平衡node 的左右子树。
 	 * @param node 
 	 * @param parent
-	 * @param isLeft TODO
 	 * @return 是否经过了平衡处理
 	 */
 	private void balanceTree(Node node,Node parent, boolean isLeft)
