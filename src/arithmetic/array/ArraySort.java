@@ -4,7 +4,7 @@
  */
 package arithmetic.array;
 
-import java.util.Random;
+import arithmetic.math.Analyze;
 
 /**
  * @author TangLi
@@ -13,33 +13,9 @@ import java.util.Random;
 public class ArraySort
 {
 	
-	public static final int dataLen = 359;
+	public static final int dataLen = 123359;///一百万是内存瓶颈
 	
-	public static int[] datas= new int[dataLen];
-	static{
-		Random rd = new Random(System.currentTimeMillis());
-		for(int i = 0 ;i <dataLen ;i++)
-			datas[i] = rd.nextInt(dataLen);
-		
-	}
-	private static void showDatas()
-	{
-		for(int i = 0 ;i < dataLen ;i++)
-			System.out.print(datas[i]+ ",");
-		System.out.println("");
-	}
-	
-	private static void checkDatas()
-	{
-		for (int i = 1; i < dataLen; i++)
-			if (datas[i] < datas[i - 1])
-			{
-				System.out.println("xxxxxxx数据排列错误xxxxxxxxxxxx");
-				return;
-			}
-		System.out.println("*******数据排列正确***********");
-	}
-	
+	public static int[] datas= Analyze.getNoRepeateable(dataLen, dataLen*3);
 	
 	/**
 	 * 冒泡排序，不停地交换。
@@ -208,7 +184,7 @@ public class ArraySort
 	
 	public static void main(String[] ar)
 	{
-		showDatas();
+		Analyze.printdata(datas);
 		quickSort(datas);
 //		bubbleSort(datas);
 //		selectSort(datas);
@@ -216,10 +192,12 @@ public class ArraySort
 //		hillSort(datas);
 //		mergeRecursiveSort(datas);
 		
-		showDatas();
-		checkDatas();
+		Analyze.printdata(datas);
+		Analyze.checkDataSort(datas);
 		
 	}
+
+	
 
 
 }

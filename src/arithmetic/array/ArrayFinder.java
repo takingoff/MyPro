@@ -4,6 +4,8 @@
  */
 package arithmetic.array;
 
+import arithmetic.math.Analyze;
+
 /**
  * @author TangLi 2015年3月4日下午3:25:09
  */
@@ -13,11 +15,8 @@ public class ArrayFinder
 	public static int[] datas;// = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 18 };
 
 	static {
-		datas = new int[1000];
-		for(int i = 0 ;i < 1000 ;i ++)
-		{
-			datas[i] = i;
-		}
+		datas = Analyze.getNoRepeateable(20, 100);
+		Analyze.printdata(datas);
 	}
 	
 	private static int binarySearch(int value, int[] datas, int begin, int end)
