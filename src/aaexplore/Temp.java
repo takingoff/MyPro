@@ -23,9 +23,11 @@ public class Temp
 		System.out.println(d);
 
 		
-		System.out.println(getMD5Str("tangli"));
+		System.out.println(getMD5Str("zheshiyigehaizi"));
 	}
 
+		
+	///MD5 32位 小写
 	public static String getMD5Str(String str)
 	{
 		MessageDigest messageDigest = null;
@@ -54,8 +56,6 @@ public class Temp
 
 		for (int i = 0; i < byteArray.length; i++)
 		{
-			int g = 0xFF & byteArray[i];
-			System.out.println(g);
 			if (Integer.toHexString(0xFF & byteArray[i]).length() == 1)
 				md5StrBuff.append("0").append(Integer.toHexString(0xFF & byteArray[i]));
 			else
