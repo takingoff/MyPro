@@ -18,6 +18,7 @@ public class GetField
 	public static void main(String[] args)
 	{
 		
+		System.out.println("/////////////////////////////////////getFields  only public");
 		Field[] fields = Juno.class.getFields();
 		
 		for(Field field :fields)
@@ -26,23 +27,37 @@ public class GetField
 			
 		}
 		
-		
-		
-		Method[] methods = Juno.class.getMethods();
-		for(Method method :methods)
+		System.out.println("/////////////////////////////////////getDeclaredFields contain all private ");
+		Field[] f = Juno.class.getDeclaredFields();
+		for(Field field :f)
 		{
-			if(method.getName().startsWith("set"))
-				System.out.println(method.getName().substring(3, 4).toLowerCase()+method.getName().substring(4,method.getName().length()));
+			System.out.println(field.getName());
 			
 		}
+		System.out.println("/////////////////////////////////////getDeclaredMethods contain private methods not contain construct");
 		
-		System.out.println(Juno.class.getCanonicalName());
+		Method[] methods = Juno.class.getDeclaredMethods();
+		for(Method method :methods)
+		{
+			System.out.println(method.getName());
+		}
+		
+		System.out.println("/////////////////////////////////////getMethods only public and baseObject method");
+		
+		Method[] mm = Juno.class.getMethods();
+		for(Method method :mm)
+		{
+			System.out.println(method.getName());
+		}
+		
 		
 	}
 	
 	static class Juno
 	{
 		public String test;
+		public static String staticStr;
+		public static final String constantStr = "xxx";
 		
 		
 		private String id;
@@ -50,6 +65,10 @@ public class GetField
 		private int age;
 		private int level;
 		private char sex;
+		
+		private void privateMethod_______(){};
+		public Juno(){privateMethod_______();};
+		
 		public String getId()
 		{
 			return id;
