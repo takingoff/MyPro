@@ -17,7 +17,6 @@ public class ShowMethods
 		try
 		{
 
-			
 			Class<?> c = Class.forName(ShowMethods.class.getName());
 			Method[] m = c.getMethods();
 			Constructor[] ctor = c.getConstructors();
