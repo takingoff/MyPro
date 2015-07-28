@@ -18,7 +18,9 @@ public class GetField
 	public static void main(String[] args)
 	{
 		
-		System.out.println("/////////////////////////////////////getFields  only public");
+		System.out.println("先找本类，再找基类，最后找接口");
+		
+		System.out.println("/////////////////////////////////////getFields  only public but contain base's field");
 		Field[] fields = Juno.class.getFields();
 		
 		for(Field field :fields)
@@ -27,14 +29,14 @@ public class GetField
 			
 		}
 		
-		System.out.println("/////////////////////////////////////getDeclaredFields contain all private ");
+		System.out.println("/////////////////////////////////////getDeclaredFields contain all private not contain base's field ");
 		Field[] f = Juno.class.getDeclaredFields();
 		for(Field field :f)
 		{
 			System.out.println(field.getName());
 			
 		}
-		System.out.println("/////////////////////////////////////getDeclaredMethods contain private methods not contain construct");
+		System.out.println("/////////////////////////////////////getDeclaredMethods contain private methods not contain construct base's method");
 		
 		Method[] methods = Juno.class.getDeclaredMethods();
 		for(Method method :methods)
@@ -42,7 +44,7 @@ public class GetField
 			System.out.println(method.getName());
 		}
 		
-		System.out.println("/////////////////////////////////////getMethods only public and baseObject method");
+		System.out.println("/////////////////////////////////////getMethods only public and base's method");
 		
 		Method[] mm = Juno.class.getMethods();
 		for(Method method :mm)
@@ -53,7 +55,17 @@ public class GetField
 		
 	}
 	
-	static class Juno
+	static class Base
+	{
+		public String baseid;
+		public String baseFunction()
+		{
+			return "";
+		}
+		
+	}
+	
+	static class Juno extends Base
 	{
 		public String test;
 		public static String staticStr;
