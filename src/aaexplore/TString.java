@@ -18,10 +18,21 @@ public class TString
 			System.out.println(s);
 		}
 		
-		Runtime.getRuntime().exit(1);
-		System.exit(1);
+//		Runtime.getRuntime().exit(1);
+//		System.exit(1);
+		
+		test();
+		
+		
 	}
 	
 	
+	
+	public static void test()
+	{
+		StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+		(new Throwable()).printStackTrace();
+		stackTrace[0].getMethodName();
+	}
 }
 
