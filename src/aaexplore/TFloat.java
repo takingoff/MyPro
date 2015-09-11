@@ -2,7 +2,7 @@ package aaexplore;
 
 import java.math.BigDecimal;
 
-public class FloatTest
+public class TFloat
 {
 	
 	/**
@@ -10,8 +10,8 @@ public class FloatTest
 	 */
 	public static void main(String[] args)
 	{
-//		tFloat();
-		testMathRound();
+		tFloat();
+//		testMathRound();
 		
 	}
 

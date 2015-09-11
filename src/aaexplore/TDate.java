@@ -7,7 +7,7 @@ import java.util.Date;
 
 
 
-public class DateTest
+public class TDate
 {
 
 	/**
