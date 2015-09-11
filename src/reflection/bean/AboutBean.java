@@ -11,8 +11,8 @@ import net.sf.cglib.beans.BeanCopier;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
-import aaaautil.Util;
 import thibernate.TStudent;
+import aaaautil.Util;
 
 /**
  * @author tangli 2015年9月11日下午8:28:00
@@ -49,7 +49,6 @@ public class AboutBean
 				{
 					copier.copy(s, s4, null);
 				}
-
 			}
 		});
 		
@@ -93,7 +92,7 @@ public class AboutBean
 		});
 		
 		
-
+		
 		System.out.println(s1.getName());
 		System.out.println(s2.getName());
 		System.out.println(s3.getName());
