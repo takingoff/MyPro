@@ -11,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * @author TangLi 2015年3月5日上午9:23:54
  */
-public class Temp
+public class TMD5Str
 {
 	public static void main(String[] ar)
 	{
@@ -21,7 +21,6 @@ public class Temp
 
 		int d = c + b;
 		System.out.println(d);
-
 		
 		System.out.println(getMD5Str("zheshiyigehaizi"));
 	}

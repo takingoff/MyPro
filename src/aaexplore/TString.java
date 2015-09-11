@@ -1,5 +1,8 @@
 package aaexplore;
 
+import java.net.URLEncoder;
+import java.util.UUID;
+
 import org.apache.commons.lang3.StringUtils;
 
 
@@ -7,7 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 public class TString
 {
 
-	public static void main(String[] ars)
+	public static void main(String[] ars) throws Exception
 	{
 		String dateStr = "[\"2014/10/14\",\"2014/10/18\",\"2014/10/13\"]";
 		System.out.println(dateStr);
@@ -28,6 +31,11 @@ public class TString
 		System.out.println(StringUtils.isEmpty(null));
 		
 		
+		
+		String url = "|";
+		System.out.println(URLEncoder.encode(url, "utf-8"));
+		
+		System.out.println(UUID.randomUUID().toString());;
 		
 		
 	}

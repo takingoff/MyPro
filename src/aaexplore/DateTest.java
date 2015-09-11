@@ -1,11 +1,9 @@
 package aaexplore;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
-import java.util.UUID;
 
 
 
@@ -34,12 +32,6 @@ public class DateTest
         
 		date = format1.parse("2010-5-1 1:1:1");
 		System.out.println(format1.format(date));
-		
-		
-		String url = "|";
-		System.out.println(URLEncoder.encode(url, "utf-8"));
-		
-		System.out.println(UUID.randomUUID().toString());;
 		
 		
 	}
