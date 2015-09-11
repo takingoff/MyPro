@@ -18,7 +18,7 @@ import aaaautil.Util;
  * @author tangli 2015年9月11日下午8:28:00
  */
 
-public class AboutBean
+public class BeanCopy
 {
 
 	public static void main(String[] ar) throws Exception
