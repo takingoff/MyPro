@@ -8,6 +8,7 @@ import java.util.Date;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
@@ -31,42 +32,61 @@ public class HibernateUtil
 	}
 	
 	
-	public static final ThreadLocal<Session> session  =  new ThreadLocal<Session>();
+	public static final ThreadLocal<Session> local  =  new ThreadLocal<Session>();
 	
 	public static Session currentSession()
 	{
-		Session s  = (Session)session.get();
-		
+		Session s  = (Session)local.get();
 		if(s == null)
 		{
 			s = sf.openSession();
-			session.set(s);
+			local.set(s);
 		}
 		return s;
-		
 	}
 	
 	public static void closeSession()
 	{
-		Session s  = (Session)session.get();
+		Session s  = (Session)local.get();
 		if(s != null)
 			s.close();
-		session.set(null);
+		local.set(null);
 	}
-	
 	
 	
 	public static void main(String[] ar)
 	{
 		
+	
+		
+//		testSave();
+		
+		System.exit(0);
+
+		
+	}
+	
+	
+
+	/**
+	 * 
+	 */
+	public static void testSave()
+	{
 		Session s = HibernateUtil.currentSession();
+		Transaction tx = s.beginTransaction();  
 		
-		TStudent st = new TStudent();
-		st.setAge(22);
-		st.setBirth(new Date());
-		st.setName("小红an");
-		s.save(st);
+		for(int i = 0 ;i < 10000 ;i++)
+		{
+			TStudent st = new TStudent();
+			st.setAge(22);
+			st.setBirth(new Date());
+			st.setName("tangli唐力"+i);
+			s.save(st);
+		}
+		tx.commit(); 
 		
+		HibernateUtil.closeSession();
 	}
 	
 }

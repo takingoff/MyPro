@@ -90,8 +90,7 @@ public class BeanCopy
 					BeanUtils.copyProperties(s1, s);
 			}
 		});
-		
-		
+
 		
 		System.out.println(s1.getName());
 		System.out.println(s2.getName());

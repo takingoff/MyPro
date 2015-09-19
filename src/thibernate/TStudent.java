@@ -13,6 +13,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.GenericGenerator;
+
 
 /**
  * The persistent class for the t_student database table.
@@ -24,8 +26,13 @@ import javax.persistence.TemporalType;
 public class TStudent implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+//	@SequenceGenerator(name="myg",sequenceName="hilo")
 	@Id
-	@GeneratedValue
+	@GeneratedValue(generator = "paymentableGenerator")    
+	@GenericGenerator(name = "paymentableGenerator", strategy = "org.hibernate.id.UUIDGenerator")   
+	
+//	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="payablemoney_seq")  
+//	@SequenceGenerator(name="payablemoney_seq", sequenceName="id")  
 	private String id;
 
 	private int age;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-configuration PUBLIC
         "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 
 <hibernate-configuration>
 
@@ -9,9 +9,11 @@
 
 		<!-- Database connection settings -->
 		<property name="connection.driver_class">org.gjt.mm.mysql.Driver</property>
-		<property name="connection.url">jdbc:mysql://localhost:3307/test</property>
-		<property name="connection.username">sa</property>
-		<property name="connection.password">sa</property>
+		<property name="connection.url">
+			<![CDATA[jdbc:mysql://localhost:3306/myProc?useUnicode=true&characterEncoding=utf8]]>
+		</property>
+		<property name="connection.username">root</property>
+		<property name="connection.password"></property>
 
 		<!-- JDBC connection pool (use the built-in) -->
 		<property name="connection.pool_size">1</property>
