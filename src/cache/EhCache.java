@@ -60,7 +60,7 @@ public class EhCache
 			    .build(true);
 
 		Cache<Long, String> cache = persistentCacheManager.getCache("persistent-cache", Long.class, String.class);
-		for (int i = 0; i < 10000; i++)
+		for (int i = 0; i < 100000; i++)
 		{
 			cache.put(new Long(i), "tangli's data" + i);
 		}
