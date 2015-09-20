@@ -4,6 +4,7 @@
  */
 package thibernate;
 
+
 import java.util.Date;
 
 import org.hibernate.Session;
@@ -56,14 +57,10 @@ public class HibernateUtil
 	
 	public static void main(String[] ar)
 	{
-		
-	
-		
-//		testSave();
-		
+		// testSave();
+
 		System.exit(0);
 
-		
 	}
 	
 	
