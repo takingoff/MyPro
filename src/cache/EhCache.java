@@ -4,7 +4,9 @@
  */
 package cache;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
 import java.net.URL;
 
 import org.ehcache.Cache;
@@ -23,6 +25,8 @@ import org.ehcache.config.xml.XmlConfiguration;
 import org.ehcache.event.CacheEvent;
 import org.ehcache.event.CacheEventListener;
 import org.ehcache.event.EventType;
+import org.ehcache.expiry.Duration;
+import org.ehcache.expiry.Expirations;
 
 /**
  * @author tangli 2015年9月19日下午5:56:45
@@ -51,20 +55,39 @@ public class EhCache
 			    .withCache("persistent-cache", CacheConfigurationBuilder.newCacheConfigurationBuilder()
 			        .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder()
 			            .heap(10000, EntryUnit.ENTRIES)
-			            .disk(2, MemoryUnit.GB, true)) 
+			            .disk(2, MemoryUnit.GB, true)).withExpiry(Expirations.timeToLiveExpiration(new Duration(60,java.util.concurrent.TimeUnit.SECONDS))) 
 			        .buildConfig(Long.class, String.class))
 			    .build(true);
 
 		Cache<Long, String> cache = persistentCacheManager.getCache("persistent-cache", Long.class, String.class);
-		for (int i = 0; i < 100000; i++)
+		for (int i = 0; i < 10000; i++)
 		{
 			cache.put(new Long(i), "tangli's data" + i);
 		}
 
 		System.out.println(cache.get(0L));
 
-		persistentCacheManager.close();
 
+		try
+		{
+			while(true)
+			{
+				BufferedReader strin=new BufferedReader(new InputStreamReader(System.in));
+				System.out.println("输入数字key！");
+				String str = strin.readLine(); 
+				System.out.println(cache.get(new Long(str)));
+			}
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			persistentCacheManager.close();
+			
+		}
+		
 	}
 
 	/**
