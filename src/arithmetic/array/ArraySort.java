@@ -4,7 +4,6 @@
  */
 package arithmetic.array;
 
-import arithmetic.math.Analyze;
 
 /**
  * @author TangLi
@@ -12,10 +11,6 @@ import arithmetic.math.Analyze;
  */
 public class ArraySort
 {
-	
-	public static final int dataLen = 123359;///一百万是内存瓶颈
-	
-	public static int[] datas= Analyze.getNoRepeateable(dataLen, dataLen*3);
 	
 	/**
 	 * 冒泡排序，不停地交换。
@@ -101,9 +96,9 @@ public class ArraySort
 	}
 	
 	
-	public static void mergeRecursiveSort(int[] datas)
+	public static int[]  mergeRecursiveSort(int[] datas)
 	{
-		ArraySort.datas=aMergeRecursiveSort(datas,0,datas.length-1);
+		return aMergeRecursiveSort(datas,0,datas.length-1);
 		
 	}
 	
@@ -181,23 +176,4 @@ public class ArraySort
 		aQuickSort(0,datas.length-1,datas);
 	}
 	
-	
-	public static void main(String[] ar)
-	{
-		Analyze.printdata(datas);
-		quickSort(datas);
-//		bubbleSort(datas);
-//		selectSort(datas);
-//		insertSort(datas);
-//		hillSort(datas);
-//		mergeRecursiveSort(datas);
-		
-		Analyze.printdata(datas);
-		Analyze.checkDataSort(datas);
-		
-	}
-
-	
-
-
 }

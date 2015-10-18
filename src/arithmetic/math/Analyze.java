@@ -44,15 +44,14 @@ public class Analyze
 		System.out.println("");
 	}
 	
-	public static void checkDataSort(int[] datas)
+	public static boolean checkDataSort(int[] datas)
 	{
 		for (int i = 1; i < datas.length; i++)
 			if (datas[i] < datas[i - 1])
 			{
-				System.out.println("xxxxxxx数据排列错误xxxxxxxxxxxx");
-				return;
+				return false;
 			}
-		System.out.println("*******数据排列正确***********");
+		return true;
 	}
 	
 	
