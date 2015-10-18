@@ -5,8 +5,11 @@
 package arithmetic.array;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import arithmetic.math.Analyze;
@@ -18,9 +21,24 @@ import arithmetic.math.Analyze;
 public class ArraySortTest
 {
 
-	public static final int dataLen = 159;///一百万是内存瓶颈
+	public static final int dataLen = 11959;///一百万是内存瓶颈
 	
-	int[] datas;
+	static int[] backup;
+	int[] datas = new int[dataLen];
+	
+	@BeforeClass
+	public static void setUpclass()
+	{
+		backup = Analyze.getNoRepeateable(dataLen, dataLen*3);
+		Analyze.printdata(backup);
+	}
+	
+	@AfterClass
+	public static void tearDownclass()
+	{
+		backup = null;
+	}
+	
 	
 	/**
 	 * @throws java.lang.Exception
@@ -28,7 +46,8 @@ public class ArraySortTest
 	@Before
 	public void setUp() throws Exception
 	{
-		datas = Analyze.getNoRepeateable(dataLen, dataLen*3);
+		System.arraycopy(backup,0,datas,0,backup.length);
+		
 		System.out.println("\n\n");
 		Analyze.printdata(datas);
 	}
@@ -41,13 +60,12 @@ public class ArraySortTest
 	{
 		Analyze.printdata(datas);
 		Assert.assertTrue(Analyze.checkDataSort(datas));
-		datas = null;
 	}
 
 	/**
 	 * Test method for {@link arithmetic.array.ArraySort#bubbleSort(int[])}.
 	 */
-	@Test
+	@Test(timeout=500)
 	public void testBubbleSort()
 	{
 		ArraySort.bubbleSort(datas);
@@ -65,7 +83,7 @@ public class ArraySortTest
 	/**
 	 * Test method for {@link arithmetic.array.ArraySort#insertSort(int[])}.
 	 */
-	@Test
+	@Test(timeout=100)
 	public void testInsertSort()
 	{
 		ArraySort.insertSort(datas);
@@ -75,6 +93,7 @@ public class ArraySortTest
 	 * Test method for {@link arithmetic.array.ArraySort#hillSort(int[])}.
 	 */
 	@Test
+	@Ignore
 	public void testHillSort()
 	{
 		ArraySort.hillSort(datas);
@@ -92,7 +111,7 @@ public class ArraySortTest
 	/**
 	 * Test method for {@link arithmetic.array.ArraySort#quickSort(int[])}.
 	 */
-	@Test
+	@Test(timeout=10)
 	public void testQuickSort()
 	{
 		ArraySort.quickSort(datas);
