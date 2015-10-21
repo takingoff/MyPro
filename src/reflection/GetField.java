@@ -15,12 +15,12 @@ public class GetField
 {
 	
 	
-	public static void main(String[] args)
+	public static void main(String[] args)throws Exception
 	{
 		
-		System.out.println("先找本类，再找基类，最后找接口");
+		System.err.println("先找本类，再找基类，最后找接口");
 		
-		System.out.println("/////////////////////////////////////getFields  only public but contain base's field");
+		System.err.println("/////////////////////////////////////getFields  all public include base's public");
 		Field[] fields = Juno.class.getFields();
 		
 		for(Field field :fields)
@@ -29,14 +29,20 @@ public class GetField
 			
 		}
 		
-		System.out.println("/////////////////////////////////////getDeclaredFields contain all private not contain base's field ");
+		System.err.println("/////////////////////////////////////getDeclaredFields contain all self include private  ");
 		Field[] f = Juno.class.getDeclaredFields();
 		for(Field field :f)
 		{
 			System.out.println(field.getName());
-			
 		}
-		System.out.println("/////////////////////////////////////getDeclaredMethods contain private methods not contain construct base's method");
+		
+		
+		System.err.println("/////////////////////////////////////static value can access by null object");
+		System.err.println(Juno.class.getField("staticStr").get(null).toString());
+		System.err.println(Juno.class.getField("constantStr").get(null).toString());
+		
+		
+		System.out.println("/////////////////////////////////////getDeclaredMethods all self methods contain construct and private");
 		
 		Method[] methods = Juno.class.getDeclaredMethods();
 		for(Method method :methods)
@@ -44,7 +50,7 @@ public class GetField
 			System.out.println(method.getName());
 		}
 		
-		System.out.println("/////////////////////////////////////getMethods only public and base's method");
+		System.err.println("/////////////////////////////////////getMethods all public include base's public");
 		
 		Method[] mm = Juno.class.getMethods();
 		for(Method method :mm)
@@ -68,8 +74,8 @@ public class GetField
 	static class Juno extends Base
 	{
 		public String test;
-		public static String staticStr;
-		public static final String constantStr = "xxx";
+		public static String staticStr = "static value";
+		public static final String constantStr = "static final value";
 		
 		
 		private String id;
