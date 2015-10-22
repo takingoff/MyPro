@@ -5,13 +5,17 @@
 package collection;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import aaaautil.KeyValue;
 
 /**
  * @author tangli
@@ -47,7 +51,7 @@ public class CollectionTest
 	@Test(expected=UnsupportedOperationException.class)
 	public void testUnmodifiable()
 	{
-		List<String> result = java.util.Collections.unmodifiableList(list);
+		List<String> result = Collections.unmodifiableList(list);
 		result.add("x");
 	}
 	
@@ -73,6 +77,29 @@ public class CollectionTest
 		}
 	}
 	
+	@Test
+	public void testValAsArray()
+	{
+		ArrayList<String> alist = new ArrayList<String>();
+		alist.add("1");
+		alist.add("2");
+		
+		Object[] array = alist.toArray();
+		array[0] = "xxxx";
+		Assert.assertNotEquals(array[0], list.get(0));
+	}
+	
+	@Test
+	public void testRefAsArray()
+	{
+		ArrayList<KeyValue> alist = new ArrayList<KeyValue>();
+		alist.add(new KeyValue("key","value"));
+		Object[] array =  alist.toArray();
+		
+		alist.get(0).key = "tangli";
+		
+		Assert.assertEquals(array[0], alist.get(0));
+	}
 	
 
 }
