@@ -7,6 +7,7 @@ package collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Map;
 
 /**
  * @author TangLi
@@ -17,8 +18,10 @@ public class Test
 	public static void main(String[] ar)
 	{
 		testSet();
-		testHashTable();
-		testHashMap();
+		
+		System.err.println("一个线程正在迭代时，另外线程改变其结构（删除添加元素）会引起异常！，但是只是访问值，或者修改值是不会异常的哦。");
+		testMap(new HashMap<String, String>());
+		testMap(new Hashtable<String, String>());
 	}
 	
 	public static void testSet()
@@ -30,18 +33,16 @@ public class Test
 
 		System.out.println(set.size());
 	}
-
 	
-	public static void testHashTable()
+	public static void testMap(Map<String,String> map)
 	{
-		Hashtable<String, String> table = new Hashtable<String, String>();
+		Map<String, String> table = map;
 
 		table.put("s1", "v1");
 		table.put("s2", "v2");
 		table.put("s3", "v3");
 
-		TIterateHashTable tit = new TIterateHashTable(table);
-		Thread thread2 = new Thread(tit);
+		Thread thread2 = new Thread(new TIterateMap(table));
 		thread2.start();
 
 		// pause one seconde let table structure change when the iterator is
@@ -55,39 +56,22 @@ public class Test
 			e.printStackTrace();
 		}
 		System.out.println("main thread will change table structure right now ------------");
-		table.put("sd", "sd");
+		table.put("s","s");
+		
+//		System.out.println("main thread will change table element value right now ------------");
+//		table.put("s1","s");
+//		table.put("s1","s");
+//		table.put("s1","s");
+//		table.put("s1","s");
 	}
 
-	public static void testHashMap()
-	{
-		HashMap<String, String> map = new HashMap<String, String>();
 
-		map.put("s1", "v1");
-		map.put("s2", "v2");
-		map.put("s3", "v3");
-
-		TIterateHashMap tim = new TIterateHashMap(map);
-		Thread thread1 = new Thread(tim);
-		thread1.start();
-
-		try
-		{
-			Thread.sleep(1000);
-		}
-		catch (InterruptedException e)
-		{
-			e.printStackTrace();
-		}
-		System.out.println("main thread will change map structure right now ------------");
-		map.put("sd", "sd");
-	}
-
-	public static class TIterateHashTable implements Runnable
+	public static class TIterateMap implements Runnable
 	{
 
-		private Hashtable<String, String> ht;
+		private Map<String, String> ht;
 
-		public TIterateHashTable(Hashtable<String, String> ht)
+		public TIterateMap(Map<String, String> ht)
 		{
 			this.ht = ht;
 		}
@@ -114,40 +98,6 @@ public class Test
 
 			}
 
-		}
-
-	}
-
-	public static class TIterateHashMap implements Runnable
-	{
-
-		private HashMap<String, String> map;
-
-		public TIterateHashMap(HashMap<String, String> map)
-		{
-			this.map = map;
-		}
-
-		@Override
-		public void run()
-		{
-			System.out.println("thread  iterating    map ------------");
-			while (true)
-			{
-				for (String s : map.keySet())
-				{
-					System.out.println(map.get(s));
-
-					try
-					{
-						Thread.sleep(1000);
-					}
-					catch (InterruptedException e)
-					{
-						e.printStackTrace();
-					}
-				}
-			}
 		}
 
 	}
