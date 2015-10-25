@@ -25,17 +25,27 @@ public class IssueFootStep
 			@Override
 			public void doSome() throws Exception
 			{
-				System.out.println(f(48));
+				System.out.println(f(44));
 			}
 		});
 		
-		// 换种方式效率奇高。。
+		//消除递归中的重复调用
 		Util.timing(new DoSome()
 		{
 			@Override
 			public void doSome() throws Exception
 			{
-				System.out.println(f2(145));
+				System.out.println(f2(44));
+			}
+		});
+		
+		// 完全消除递归。。。。
+		Util.timing(new DoSome()
+		{
+			@Override
+			public void doSome() throws Exception
+			{
+				System.out.println(f3(44));
 			}
 		});
 		
@@ -57,7 +67,34 @@ public class IssueFootStep
 		return f(n-1) + f(n-2);
 	}
 	
+	/**
+	 * 消除重复计算
+	 * @param n
+	 * @return
+	 */
 	public static int f2(int n)
+	{
+		fn = new int[n+1];
+		return fn(n);
+	}
+
+	private static int[] fn ;
+	/**
+	 * @param n
+	 * @return
+	 */
+	private static int fn(int n)
+	{
+		if(n<=2 )
+			return n;
+		
+		if(fn[n]==0)
+			fn[n] = fn(n-1) + fn(n-2);
+		
+		return fn[n];
+	}
+	
+	public static int f3(int n)
 	{
 		if(n<= 2)
 			return n;
