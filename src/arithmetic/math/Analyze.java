@@ -54,7 +54,6 @@ public class Analyze
 		return true;
 	}
 	
-	
 	public static void main(String[] ar)
 	{
 		for(Object i : getNoRepeateable(10, 20))
