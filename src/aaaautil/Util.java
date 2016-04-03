@@ -18,7 +18,6 @@ public class Util
 	
 	public static void timing(DoSome ds) throws Exception
 	{
-		
 		long time = System.currentTimeMillis();
 		System.out.println("//**************************begin");
 		ds.doSome();
