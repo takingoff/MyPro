@@ -21,10 +21,10 @@ public class Simple
 			throw new Exception();
 	}
 	
-	@Deprecated
-	public void myMethod2()
+	public int myMethod2(int a,int b)
 	{
-		System.out.println(StringFeild);
+		int c = a + b;
+		return c;
 	}
 	
 	public static void main(String[] ar)

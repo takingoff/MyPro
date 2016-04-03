@@ -38,8 +38,13 @@ public class TString
 		System.out.println(UUID.randomUUID().toString());;
 		
 		
+		System.out.println(String.class.getClassLoader());
+		
+		System.out.println(TString.class.getClassLoader());
+		System.out.println(TString.class.getClassLoader().getParent());
+		System.out.println(TString.class.getClassLoader().getParent().getParent());
+		
 	}
-	
 	
 	
 	
