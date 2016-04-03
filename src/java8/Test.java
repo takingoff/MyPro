@@ -1,9 +1,4 @@
-/**
- *	2015年4月15日 下午7:24:21
- *	TangLi
- */
 package java8;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;

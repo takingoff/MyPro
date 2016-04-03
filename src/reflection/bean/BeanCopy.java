@@ -23,19 +23,19 @@ public class BeanCopy
 
 	public static void main(String[] ar) throws Exception
 	{
-		TStudent s = new TStudent();
+		final TStudent s = new TStudent();
 
 		s.setAge(11);
 		s.setBirth(new Date());
 		s.setId("xxx");
 		s.setName("asdfasdfasdfa");
 
-		TStudent s1 = new TStudent();
-		TStudent s2 = new TStudent();
-		TStudent s3 = new TStudent();
-		TStudent s4 = new TStudent();
+		final TStudent s1 = new TStudent();
+		final TStudent s2 = new TStudent();
+		final TStudent s3 = new TStudent();
+		final TStudent s4 = new TStudent();
 
-		int count = 100000;
+		final int count = 100000;
 
 		// 极大次数下优势明显，很稳定
 		Util.timing(new Util.DoSome()
