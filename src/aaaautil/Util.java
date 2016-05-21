@@ -10,7 +10,6 @@ package aaaautil;
  */
 public class Util
 {
-	
 	public static interface DoSome
 	{
 		public void doSome()throws Exception;
