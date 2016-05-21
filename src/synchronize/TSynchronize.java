@@ -1,7 +1,3 @@
-/**
- *	2014年12月9日 上午9:47:33
- *	TangLi
- */
 package synchronize;
 
 /**
@@ -9,176 +5,100 @@ package synchronize;
  */
 public class TSynchronize
 {
-	static public void main(String[] ar)
+
+	private static Object lock = new Object();
+
+	static public void main(String[] ar) throws InterruptedException
 	{
-		System.out.println("非同步块中不能够执行wait，并且只能被同步的对象才能执行wait和notify。否者抛出异常.\n"
-				+ "要注意的是synchronized(obj),意味着该对象被锁定，其它所有地方试图调用synchronized(obj)将会被阻塞。而不是局限于当前同步块！！");
-		
-		deadLock();
-		
-//		synMenthod();
-		
-		
-	}
+		// "非同步块中不能够执行wait，并且只能被同步的对象才能执行wait和notify。否者抛出异常.\n" +
+		// "要注意的是synchronized(obj),意味着该对象被锁定，其它所有地方试图调用synchronized(obj)将会被阻塞。而不是局限于当前同步块！！");
 
-	public static void deadLock()
-	{
-		MySynchronizedClass synClass = new MySynchronizedClass();
-		Thread t1 = new Thread(new CheckResourceThread(synClass, true));
-		t1.start();
-		Thread t2 = new Thread(new CheckResourceThread(synClass, false));
-		t2.start();
-	}
-	
-	public static void synMenthod()
-	{
-		MySynchronizedClass synClass = new MySynchronizedClass();
-		Thread t1 = new Thread(new SynMethodThread(synClass));
-		t1.start();
-		Thread t2 = new Thread(new SynMethodThread(synClass));
-		t2.start();
-	}
-
-	static class MySynchronizedClass
-	{
-		boolean isResource1Avaliable = true;
-		boolean isResource2Avaliable = true;
-		synchronized public void synMethod() throws Exception
-		{
-
-			System.out.println("enter synMethod.." + "---" + Thread.currentThread().getId());
-
-			Thread.sleep(5000);
-
-			System.out.println("end synMethod" + "---" + Thread.currentThread().getId());
-
-		}
-
-		public void firstCheckResource1() throws Exception
-		{
-			if (isResource1Avaliable == false)
-			{
-				System.out.println("resource1 is locked so wait" + "---" + Thread.currentThread().getId());
-				//this.wait();/////非同步块中不能够执行wait。否者抛出异常
-			}
-			else
-			{
-				isResource1Avaliable = false;
-				System.out.println("resource1 is avaliable so lock resource1" + "---" + Thread.currentThread().getId());
-			}
-			Thread.sleep(6000);
-			synchronized (this)
-			{
-
-				if (isResource2Avaliable == false)
-				{
-					System.out.println("resource2 is locked so wait" + "---" + Thread.currentThread().getId());
-					this.wait();
-				}
-				else
-				{
-
-					isResource2Avaliable = false;
-					System.out.println("resource2 is avaliable so lock resource1" + "---" + Thread.currentThread().getId());
-				}
-
-				System.out.println("two resources avaliable so can do some thing! then releas two resource!" + "---" + Thread.currentThread().getId());
-				isResource1Avaliable = true;
-				isResource2Avaliable = true;
-				this.notify();
-
-			}
-		}
-
-		public void firstCheckResource2() throws Exception
-		{
-			if (isResource2Avaliable == false)
-			{
-				System.out.println("resource2 is locked so wait" + "---" + Thread.currentThread().getId());
-				//this.wait();/////非同步块中不能够执行wait。否者抛出异常
-			}
-			else
-			{
-				isResource2Avaliable = false;
-				System.out.println("resource2 is avaliable so lock resource2" + "---" + Thread.currentThread().getId());
-			}
-
-			Thread.sleep(3000);
-			synchronized (this)
-			{
-				Thread.sleep(10000);
-				if (isResource1Avaliable == false)
-				{
-					System.out.println("resource1 is locked so wait" + "---" + Thread.currentThread().getId());
-					this.wait();
-				}
-				else
-				{
-					isResource1Avaliable = false;
-					System.out.println("resource1 is avaliable so lock resource1" + "---" + Thread.currentThread().getId());
-				}
-
-				System.out.println("two resources avaliable so can do some thing! then releas two resource!" + "---" + Thread.currentThread().getId());
-				isResource1Avaliable = true;
-				isResource2Avaliable = true;
-				this.notify();
-			}
-		}
-
-	}
-
-	static class SynMethodThread implements Runnable
-	{
-		MySynchronizedClass synClass;
-
-		public SynMethodThread(MySynchronizedClass synClass)
-		{
-			super();
-			this.synClass = synClass;
-		}
-
-		@Override
-		public void run()
+		synchronized (lock)
 		{
 			try
 			{
-				synClass.synMethod();
+				System.out.println("主线程wait1秒--" + System.currentTimeMillis());
+				lock.wait(1000L);
+				System.out.println("主线程wait1秒之后自动醒来--" + System.currentTimeMillis());
 			}
-			catch (Exception e)
+			catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+
+		}
+
+		System.out.println("===================");
+		new Thread(new Runnable()
+		{
+			public void run()
+			{
+				System.out.println("子线程启动");
+				try
+				{
+					Thread.sleep(2000L);
+				}
+				catch (InterruptedException e)
+				{
+					e.printStackTrace();
+				}
+				System.out.println("子线程使用在同步块中使用notify唤醒主线程");
+				synchronized (lock)
+				{
+					lock.notify();
+				}
+			}
+		}).start();
+
+		synchronized (lock)
+		{
+			try
+			{
+				System.out.println("主线程永久wait--" + System.currentTimeMillis());
+				lock.wait();
+				System.out.println("永久wait的主线程被唤醒--" + System.currentTimeMillis());
+			}
+			catch (InterruptedException e)
 			{
 				e.printStackTrace();
 			}
 		}
-	}
-	
-	static class CheckResourceThread implements Runnable
-	{
-		MySynchronizedClass synClass;
-		boolean isFirstCheckResource1;
 
-		public CheckResourceThread(MySynchronizedClass synClass, boolean isFirstCheckResource1)
+		System.out.println("===================");
+		Thread mainThread = Thread.currentThread();
+		new Thread(new Runnable()
 		{
-			super();
-			this.synClass = synClass;
-			this.isFirstCheckResource1 = isFirstCheckResource1;
-		}
+			public void run()
+			{
+				System.out.println("子线程启动");
+				try
+				{
+					Thread.sleep(2000L);
+				}
+				catch (InterruptedException e)
+				{
+					e.printStackTrace();
+				}
+				System.out.println("子线程用interrupt打断主线程");
+				mainThread.interrupt();
+			}
+		}).start();
 
-		@Override
-		public void run()
+		synchronized (lock)
 		{
+			System.out.println("主线程永久wait/sleep/join--" + System.currentTimeMillis());
 			try
 			{
-				if (isFirstCheckResource1)
-					synClass.firstCheckResource1();
-				else
-					synClass.firstCheckResource2();
-
+				//lock.wait();
+				//Thread.sleep(500000L);
+				Thread.currentThread().join(); // 等待自己执行完毕，也就是永远等待！
 			}
-			catch (Exception e)
+			catch (InterruptedException e)
 			{
-				e.printStackTrace();
+				System.out.println("永久阻塞的主线程抛出InterruptedException异常--" + System.currentTimeMillis());
 			}
 		}
+		
 
 	}
 
