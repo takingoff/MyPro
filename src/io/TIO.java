@@ -30,16 +30,16 @@ public class TIO implements Serializable
 	public static void main(String[] arg) throws Exception
 	{
 
-		// writeObject();
-		// readObject();
-		// dataRead();
+//		 writeObject();
+//		 readObject();
+		 dataRead();
 		// byteArray();
 		// charRead();
 		
 //		sequenceStream();
 		
 //		pushBackStream();
-		printStream();
+//		printStream();
 	}
 
 	public String name = "TIO";
@@ -49,7 +49,7 @@ public class TIO implements Serializable
 		FileOutputStream fos = new FileOutputStream("objectfile.obj");
 		ObjectOutputStream oos = new ObjectOutputStream(fos);
 		TIO obj = new TIO();
-		obj.name = "good name";
+		obj.name = "goosssd name";
 		oos.writeObject(obj);
 		oos.close();
 
