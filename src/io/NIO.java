@@ -21,7 +21,41 @@ public class NIO
 		
 //		bufferTest();
 		
-		channel();
+//		channel();
+		
+		
+		try
+		{
+			FileInputStream fi = new FileInputStream("text.txt");
+			FileChannel channel = fi.getChannel();
+			ByteBuffer bb = ByteBuffer.allocate(100);
+			channel.read(bb);
+			System.out.println(bb);
+			
+			byte[] bs = new byte[bb.position()];
+			bb.flip();	// 必须让position  = 0 !!!
+			bb.get(bs);
+			
+			bb.rewind();
+			System.out.println(bb);
+			System.out.println(bb.asCharBuffer());
+			
+			for(int i =0 ;i < bs.length;i++)
+				System.out.print(bs[i]+",");
+			System.out.println("");
+			
+			// 直接转为 UTF-16 可以识别
+			System.out.println(new String(bs,"UTF-16"));
+			
+			// 去掉 bom 也可以识别
+			System.out.println(new String(bs,2,bs.length-2,"UTF-16"));
+			
+			fi.close();
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		
 		
 	}
