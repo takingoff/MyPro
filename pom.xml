@@ -82,6 +82,7 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.4</version>
 		</dependency>
+		
 
 		<!-- apache 提供的beanUtil 利用反射处理 效率很低。 -->
 		<dependency>
@@ -128,12 +129,13 @@
 			<version>1.0.0</version>
 		</dependency>
 
-
-
-
-
-
-
+		
+		<!-- <dependency>
+		    <groupId>com.google.guava</groupId>
+		    <artifactId>guava</artifactId>
+		    <version>18.0</version>
+		</dependency> -->
+		
 
 	</dependencies>
 
