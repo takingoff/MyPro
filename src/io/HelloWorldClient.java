@@ -17,7 +17,7 @@ import java.util.Iterator;
 public class HelloWorldClient
 {
 
-	static InetSocketAddress ip = new InetSocketAddress("localhost", 8888);
+	static InetSocketAddress ip = new InetSocketAddress("localhost", 9999);
 	static CharsetEncoder encoder = Charset.forName("GB2312").newEncoder();
 
 	public static void main(String[] args) throws IOException
@@ -29,7 +29,6 @@ public class HelloWorldClient
 	static class Message implements Runnable
 	{
 		protected String name;
-		String msg = "xxx";
 
 		public Message(String index)
 		{
@@ -76,6 +75,7 @@ public class HelloWorldClient
 								channel.finishConnect();
 							
 							channel.write(encoder.encode(CharBuffer.wrap(name)));
+							System.err.println("	client send data:"+name);
 							channel.register(selector, SelectionKey.OP_READ);
 							
 						}
@@ -86,6 +86,7 @@ public class HelloWorldClient
 							int count = channel.read(buffer);
 							if (count > 0)
 							{
+								String msg= "";
 								buffer.flip();
 								while (buffer.remaining() > 0)
 								{
@@ -93,16 +94,17 @@ public class HelloWorldClient
 									msg += (char) b;
 								}
 								buffer.clear();
+								System.err.println("	client received data:"+msg);
 							}
 							else
 							{
+								System.err.println("	client received no data");
 								client.close();
 								break _FOR;
 							}
 						}
 					}
 				}
-				msg = "";
 			}
 			catch (IOException e)
 			{

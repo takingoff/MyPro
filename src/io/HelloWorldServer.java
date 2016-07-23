@@ -23,7 +23,7 @@ public class HelloWorldServer
 		try
 		{
 			server = ServerSocketChannel.open();
-			server.socket().bind(new InetSocketAddress(8888));
+			server.socket().bind(new InetSocketAddress(9999));
 			server.configureBlocking(false);
 			
 			Selector selector = Selector.open();
@@ -96,7 +96,7 @@ public class HelloWorldServer
 				clientBuffer.flip();
 				CharBuffer charBuffer = decoder.decode(clientBuffer);
 				String name = charBuffer.toString();
-				 System.out.println(name);
+				 System.out.println("	server recived data:" + name);
 				SelectionKey sKey = channel.register(selector, SelectionKey.OP_WRITE);
 				sKey.attach(name);
 			}
@@ -112,8 +112,11 @@ public class HelloWorldServer
 			SocketChannel channel = (SocketChannel) key.channel();
 			String name = (String) key.attachment();
 
-			ByteBuffer block = encoder.encode(CharBuffer.wrap("Hello !" + name));
-
+			String data = "Hello !" + name;
+			ByteBuffer block = encoder.encode(CharBuffer.wrap(data));
+			
+			System.out.println("	server sended data:"+data);
+			
 			channel.write(block);
 
 			 channel.close();
