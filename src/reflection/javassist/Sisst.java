@@ -2,8 +2,6 @@ package reflection.javassist;
 
 import java.lang.instrument.Instrumentation;
 
-import com.sun.jmx.trace.Trace;
-
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
