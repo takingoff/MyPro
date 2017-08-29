@@ -7,6 +7,7 @@ public class TestLog
 {
 	
 	static Logger logger = Logger.getLogger(TestLog.class);
+//	static Logger logger = Logger.getRootLogger();
 
 	/**
 	 * @param args
